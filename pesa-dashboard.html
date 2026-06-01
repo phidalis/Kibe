@@ -1005,6 +1005,70 @@
   </div>
 </div>
 
+<!-- Edit Game Details Modal -->
+<div class="modal-overlay" id="editGameModal">
+  <div class="modal-box" style="max-width:460px;max-height:90vh;overflow-y:auto;">
+    <button class="modal-close" onclick="closeModal('editGameModal')">✕</button>
+    <div class="modal-title">✏️ Edit Game Details</div>
+    <input type="hidden" id="editGameId">
+
+    <div class="field-wrap">
+      <div class="field-label">League / Competition</div>
+      <input type="text" class="inp" id="editGameLeague" placeholder="e.g. EPL, KPL, Champions League">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="field-wrap">
+        <div class="field-label">Home Team</div>
+        <input type="text" class="inp" id="editGameHome" placeholder="Home team name">
+      </div>
+      <div class="field-wrap">
+        <div class="field-label">Away Team</div>
+        <input type="text" class="inp" id="editGameAway" placeholder="Away team name">
+      </div>
+    </div>
+
+    <!-- Date & Time — highlighted as the key feature -->
+    <div style="background:rgba(59,130,246,0.07);border:1.5px solid rgba(59,130,246,0.3);border-radius:14px;padding:14px;margin-bottom:14px;">
+      <div style="font-size:10px;font-weight:800;color:#60a5fa;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">📅 Match Date &amp; Kick-off Time</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <div class="field-label">Match Date</div>
+          <input type="date" class="inp" id="editGameDate">
+          <div style="font-size:10px;color:var(--text-dim);margin-top:4px;">Players see this date on their screen</div>
+        </div>
+        <div>
+          <div class="field-label">Kick-off Time (24hr)</div>
+          <input type="time" class="inp" id="editGameKickoff">
+          <div style="font-size:10px;color:var(--text-dim);margin-top:4px;">Shown to players as kick-off time</div>
+        </div>
+      </div>
+      <div style="font-size:10px;color:rgba(59,130,246,0.7);margin-top:10px;line-height:1.5;">
+        ⚡ Saving updates the date &amp; time for both the admin view AND players instantly.
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+      <div class="field-wrap">
+        <div class="field-label">Home Win Odds</div>
+        <input type="number" class="inp" id="editGameOdd1" placeholder="1.85" step="0.01" min="1.01">
+      </div>
+      <div class="field-wrap">
+        <div class="field-label">Draw Odds</div>
+        <input type="number" class="inp" id="editGameOddX" placeholder="3.40" step="0.01" min="1.01">
+      </div>
+      <div class="field-wrap">
+        <div class="field-label">Away Win Odds</div>
+        <input type="number" class="inp" id="editGameOdd2" placeholder="4.20" step="0.01" min="1.01">
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-cancel" onclick="closeModal('editGameModal')">Cancel</button>
+      <button class="btn btn-save" onclick="saveGameEdit()">💾 Save Changes</button>
+    </div>
+  </div>
+</div>
+
 <!-- Edit Betslip Modal -->
 <div class="modal-overlay" id="editBetslipModal">
   <div class="modal-box" style="max-width:420px;">
@@ -1012,6 +1076,23 @@
     <div class="modal-title">🎯 Edit Bet Slip</div>
     <input type="hidden" id="editBetId">
     <div id="editBetDetails" style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px;font-size:12px;line-height:1.7;color:rgba(255,255,255,0.6);"></div>
+
+    <!-- Date & Time edit -->
+    <div style="background:rgba(59,130,246,0.07);border:1.5px solid rgba(59,130,246,0.3);border-radius:12px;padding:12px 14px;margin-bottom:14px;">
+      <div style="font-size:10px;font-weight:800;color:#60a5fa;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">📅 Placed Date &amp; Time</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div>
+          <div class="field-label">Date</div>
+          <input type="date" class="inp" id="editBetDate">
+        </div>
+        <div>
+          <div class="field-label">Time (24hr)</div>
+          <input type="time" class="inp" id="editBetTime">
+        </div>
+      </div>
+      <div style="font-size:10px;color:rgba(59,130,246,0.6);margin-top:8px;">Editing this changes the timestamp shown on the bet slip.</div>
+    </div>
+
     <div class="field-wrap">
       <div class="field-label">Set Outcome</div>
       <select class="inp" id="editBetStatus">
@@ -1081,6 +1162,9 @@
       <div class="nav-section-label">Settings</div>
       <div class="nav-item" onclick="switchPage('store')">
         <span class="nav-icon">⚙️</span> Store Settings
+      </div>
+      <div class="nav-item" onclick="switchPage('currency')">
+        <span class="nav-icon">💱</span> Currency Rates
       </div>
       <div class="nav-section-label">System</div>
       <div class="nav-item" onclick="switchPage('status')">
@@ -1416,6 +1500,63 @@
         </div>
       </div>
 
+      <!-- ── Carousel / Ticker Messages ── -->
+      <div class="section-title">📢 Carousel / Ticker Messages</div>
+      <div class="card">
+        <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:14px;">
+          <span style="font-size:20px;flex-shrink:0;">🎡</span>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#c084fc;margin-bottom:3px;">Scrolling Ticker on Login Page</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.4);line-height:1.6;">
+              One message per line. Each line appears as a scrolling item in the blue ticker bar at the top of the login/landing page (<strong style="color:rgba(255,255,255,0.6);">index.html</strong>). Changes are live instantly — no refresh needed by players.
+            </div>
+          </div>
+        </div>
+        <div class="field-label" style="margin-bottom:6px;">Ticker Items (one per line)</div>
+        <textarea id="storeTickerItems" class="inp"
+          rows="10"
+          placeholder="🏆 Wanjiku99 won KES 14,950 on Aviator&#10;✈️ Aviator hit 93.31x!&#10;💰 Brian J. cashed out KES 9,544&#10;🚀 New record: 120x this week!"
+          style="resize:vertical;font-size:13px;line-height:1.8;font-family:'JetBrains Mono',monospace;padding:12px 14px;"></textarea>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;flex-wrap:wrap;gap:8px;">
+          <div style="font-size:10px;color:rgba(255,255,255,0.25);">
+            ✏️ Use any emoji at the start of each line for visual flair · Min 2 items recommended
+          </div>
+          <div style="font-size:10px;color:rgba(160,32,240,0.7);font-weight:700;" id="tickerItemCount"></div>
+        </div>
+
+        <!-- ── Ticker Speed Control ── -->
+        <div style="margin-top:16px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.6);">🚀 Scroll Speed</div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span style="font-size:10px;color:rgba(255,255,255,0.35);">Slow</span>
+              <span id="tickerSpeedLabel" style="font-size:12px;font-weight:800;color:#c084fc;min-width:52px;text-align:center;background:rgba(160,32,240,0.12);border:1px solid rgba(160,32,240,0.3);border-radius:8px;padding:3px 8px;">Medium</span>
+              <span style="font-size:10px;color:rgba(255,255,255,0.35);">Fast</span>
+            </div>
+          </div>
+          <input type="range" id="storeTickerSpeed" min="1" max="5" step="1" value="3"
+            oninput="onTickerSpeedChange(this.value)"
+            style="width:100%;accent-color:#a020f0;height:4px;cursor:pointer;">
+          <div style="display:flex;justify-content:space-between;margin-top:6px;">
+            <span style="font-size:9px;color:rgba(255,255,255,0.2);">1</span>
+            <span style="font-size:9px;color:rgba(255,255,255,0.2);">2</span>
+            <span style="font-size:9px;color:rgba(255,255,255,0.2);">3</span>
+            <span style="font-size:9px;color:rgba(255,255,255,0.2);">4</span>
+            <span style="font-size:9px;color:rgba(255,255,255,0.2);">5</span>
+          </div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.25);margin-top:8px;">
+            ⚡ Controls how fast the ticker scrolls in the game. Higher = faster. Saves with the other settings.
+          </div>
+        </div>
+        <!-- Live preview -->
+        <div style="margin-top:14px;background:rgba(37,99,235,1);border-radius:10px;overflow:hidden;">
+          <div style="font-size:9px;font-weight:800;color:rgba(255,255,255,0.5);padding:4px 12px;letter-spacing:1px;text-transform:uppercase;background:rgba(0,0,0,0.25);">Preview</div>
+          <div style="overflow:hidden;padding:6px 0;">
+            <div id="tickerPreviewInner" style="display:flex;white-space:nowrap;font-size:12px;font-weight:700;color:white;padding:0 8px;gap:0;"></div>
+          </div>
+        </div>
+      </div>
+
       <div style="margin-top:6px;">
         <button class="save-btn full" id="saveStoreBtn" onclick="saveStoreSettings()">
           💾 Save All Store Settings
@@ -1425,8 +1566,31 @@
 
     </div><!-- end page-store -->
 
+    <!-- ── CURRENCY RATES PAGE ── -->
+    <div class="page-content" id="page-currency">
+      <div style="margin-bottom:20px;">
+        <div style="font-size:18px;font-weight:800;">💱 Currency Exchange Rates</div>
+        <div style="font-size:12px;color:var(--text-dim);margin-top:3px;">Set conversion rates against USD. Players will see balances in their selected currency.</div>
+      </div>
 
-    <!-- ── CATEGORIES PAGE ── -->
+      <!-- Priority currencies -->
+      <div class="section-title" style="display:flex;align-items:center;gap:8px;color:#f59e0b;">⭐ Priority Currencies</div>
+      <div id="currencyPriorityCards" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;"></div>
+
+      <!-- All currencies -->
+      <div class="section-title">All Currencies vs USD</div>
+      <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:14px;overflow:hidden;margin-bottom:20px;">
+        <div style="display:grid;grid-template-columns:auto 1fr auto;align-items:center;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,0.06);font-size:11px;font-weight:800;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">
+          <span>Currency</span><span style="padding-left:12px;">Rate (1 USD =)</span><span>Action</span>
+        </div>
+        <div id="currencyRatesList"></div>
+      </div>
+
+      <button class="save-btn" onclick="saveAllCurrencyRates()" id="saveCurrencyBtn" style="width:100%;">
+        💾 Save All Rates to Firestore
+      </button>
+      <div id="currencySaveMsg" style="margin-top:10px;font-size:12px;text-align:center;display:none;"></div>
+    </div><!-- end page-currency -->
     <div class="page-content" id="page-categories">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
         <div>
@@ -1449,9 +1613,14 @@
           <div style="font-size:18px;font-weight:800;">⚽ Football Game Manager</div>
           <div style="font-size:12px;color:var(--text-dim);margin-top:3px;">Create matches, set kick-off times, control scores live</div>
         </div>
-        <button class="save-btn" onclick="openModal('createGameModal')" style="display:flex;align-items:center;gap:6px;">
-          ➕ Create Game
-        </button>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="save-btn" onclick="openModal('jsonImportModal')" style="display:flex;align-items:center;gap:6px;background:rgba(59,130,246,0.15);border-color:rgba(59,130,246,0.35);color:#60a5fa;">
+            📂 Import from JSON
+          </button>
+          <button class="save-btn" onclick="openModal('createGameModal')" style="display:flex;align-items:center;gap:6px;">
+            ➕ Create Game
+          </button>
+        </div>
       </div>
 
       <!-- Search & Category Filters -->
@@ -1495,6 +1664,70 @@
         <div id="filteredGamesList"></div>
       </div>
     </div>
+
+    <!-- ══════════════════ JSON IMPORT MODAL ══════════════════ -->
+<div class="modal-overlay" id="jsonImportModal" style="align-items:flex-start;padding:0;overflow-y:auto;">
+  <div class="modal-box" style="max-width:900px;width:100%;margin:0 auto;border-radius:0 0 20px 20px;max-height:100vh;overflow-y:auto;padding:24px 20px 32px;">
+    <button class="modal-close" onclick="closeModal('jsonImportModal')">✕</button>
+    <div class="modal-title" style="font-size:20px;display:flex;align-items:center;gap:10px;">📂 Import Games from JSON
+      <span style="font-size:11px;font-weight:600;background:rgba(59,130,246,0.15);color:#60a5fa;border:1px solid rgba(59,130,246,0.25);border-radius:99px;padding:3px 10px;">Bulk Upload</span>
+    </div>
+
+    <!-- Step 1: Paste JSON -->
+    <div id="jsonImportStep1">
+      <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:14px;line-height:1.6;">
+        Paste your JSON below (array of games or single game object). All markets, categories, and odds will be parsed automatically.<br>
+        <span style="color:#f59e0b;">Category codes (e.g. EPL, KPL) will be auto-created if they don't exist yet.</span>
+      </div>
+
+      <div style="display:flex;gap:8px;margin-bottom:8px;align-items:center;flex-wrap:wrap;">
+        <label style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.5px;">Or upload a .json file:</label>
+        <input type="file" accept=".json" id="jsonFileInput" style="font-size:12px;color:rgba(255,255,255,0.6);" onchange="handleJsonFileUpload(event)">
+      </div>
+
+      <textarea id="jsonImportInput" placeholder='Paste JSON here…' rows="12"
+        style="width:100%;background:rgba(0,0,0,0.4);border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;color:white;font-family:'JetBrains Mono',monospace;font-size:12px;padding:14px;outline:none;resize:vertical;box-sizing:border-box;"></textarea>
+
+      <div id="jsonParseError" style="display:none;margin-top:8px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#f87171;border-radius:8px;padding:10px 14px;font-size:12px;"></div>
+
+      <div style="display:flex;gap:8px;margin-top:14px;">
+        <button class="btn btn-cancel" onclick="closeModal('jsonImportModal')">Cancel</button>
+        <button class="btn btn-save" onclick="parseJsonGames()" style="flex:2;">🔍 Parse & Preview Games</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Preview & Edit -->
+    <div id="jsonImportStep2" style="display:none;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+        <div>
+          <div style="font-size:14px;font-weight:800;" id="jsonPreviewTitle">0 games ready to upload</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:2px;" id="jsonPreviewSubtitle"></div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-cancel" onclick="showJsonStep1()">← Back</button>
+          <button class="btn btn-save" id="jsonUploadAllBtn" onclick="uploadAllJsonGames()" style="background:linear-gradient(135deg,#059669,#047857);">⬆️ Upload All to Firestore</button>
+        </div>
+      </div>
+
+      <!-- Category auto-create notice -->
+      <div id="jsonNewCatsNotice" style="display:none;margin-bottom:12px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:10px;padding:10px 14px;font-size:12px;color:#f59e0b;">
+        <strong>🏷️ New categories will be auto-created:</strong> <span id="jsonNewCatsList"></span>
+      </div>
+
+      <!-- Preview cards list -->
+      <div id="jsonPreviewList" style="display:flex;flex-direction:column;gap:10px;"></div>
+
+      <!-- Upload progress -->
+      <div id="jsonUploadProgress" style="display:none;margin-top:18px;">
+        <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.6);margin-bottom:8px;" id="jsonUploadStatus">Uploading…</div>
+        <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;">
+          <div id="jsonUploadBar" style="height:100%;background:linear-gradient(90deg,#a020f0,#059669);border-radius:3px;width:0%;transition:width 0.3s;"></div>
+        </div>
+        <div id="jsonUploadLog" style="margin-top:10px;max-height:120px;overflow-y:auto;font-size:11px;color:rgba(255,255,255,0.4);font-family:monospace;"></div>
+      </div>
+    </div>
+  </div>
+</div>
 
     <!-- ── BET SLIPS PAGE ── -->
     <div class="page-content" id="page-betslips">
@@ -2238,6 +2471,124 @@ window.saveTxEdit = async function() {
 };
 
 // ── Store Settings ─────────────────────────────────────────
+// ════════════════════════════════════════════════════════════
+//  CURRENCY RATES MANAGER
+// ════════════════════════════════════════════════════════════
+const CURRENCY_LIST = [
+  { code:'ZWL', symbol:'ZWL', flag:'🇿🇼', name:'Zimbabwe Dollar',       priority:true  },
+  { code:'NAD', symbol:'NAD', flag:'🇳🇦', name:'Namibian Dollar',        priority:true  },
+  { code:'KES', symbol:'KES', flag:'🇰🇪', name:'Kenyan Shilling',        priority:false },
+  { code:'ZAR', symbol:'R',   flag:'🇿🇦', name:'South African Rand',     priority:false },
+  { code:'NGN', symbol:'₦',   flag:'🇳🇬', name:'Nigerian Naira',         priority:false },
+  { code:'GHS', symbol:'GH₵', flag:'🇬🇭', name:'Ghanaian Cedi',          priority:false },
+  { code:'TZS', symbol:'TZS', flag:'🇹🇿', name:'Tanzanian Shilling',     priority:false },
+  { code:'UGX', symbol:'UGX', flag:'🇺🇬', name:'Ugandan Shilling',       priority:false },
+  { code:'USD', symbol:'$',   flag:'🇺🇸', name:'US Dollar',              priority:false },
+  { code:'GBP', symbol:'£',   flag:'🇬🇧', name:'British Pound',          priority:false },
+];
+
+// Working copy of rates (1 USD = X local)
+let currencyRates = {
+  KES:129, ZWL:322, NAD:18.7, ZAR:18.7, NGN:1600,
+  GHS:15.2, TZS:2650, UGX:3750, USD:1, GBP:0.79
+};
+
+let currencyPageLoaded = false;
+
+async function loadCurrencyRatesPage() {
+  if (!currencyPageLoaded) {
+    // Try to fetch saved rates from Firestore
+    try {
+      const snap = await getDoc(doc(db, 'settings', 'currencyRates'));
+      if (snap.exists()) Object.assign(currencyRates, snap.data());
+    } catch(_) {}
+    currencyPageLoaded = true;
+  }
+  renderCurrencyRatesPage();
+}
+
+function renderCurrencyRatesPage() {
+  // Priority cards (Zimbabwe + Namibia)
+  const priorityEl = document.getElementById('currencyPriorityCards');
+  if (priorityEl) {
+    priorityEl.innerHTML = CURRENCY_LIST.filter(c => c.priority).map(c => `
+      <div style="background:linear-gradient(135deg,rgba(245,158,11,0.1),rgba(245,158,11,0.05));border:1.5px solid rgba(245,158,11,0.35);border-radius:14px;padding:16px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+          <span style="font-size:24px;">${c.flag}</span>
+          <div>
+            <div style="font-weight:900;font-size:15px;">${c.code}</div>
+            <div style="font-size:11px;color:var(--text-dim);">${c.name}</div>
+          </div>
+        </div>
+        <label style="font-size:10px;font-weight:800;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:6px;">1 USD =</label>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <input type="number" id="rate_${c.code}" value="${currencyRates[c.code] || 1}"
+            step="0.01" min="0.001"
+            style="flex:1;padding:10px 12px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(245,158,11,0.4);border-radius:10px;color:white;font-size:15px;font-weight:800;outline:none;width:0;"
+            oninput="currencyRates['${c.code}']=parseFloat(this.value)||0">
+          <span style="font-size:13px;font-weight:700;color:rgba(255,255,255,0.5);">${c.symbol}</span>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // Full list
+  const listEl = document.getElementById('currencyRatesList');
+  if (listEl) {
+    listEl.innerHTML = CURRENCY_LIST.map((c, i) => `
+      <div style="display:grid;grid-template-columns:auto 1fr auto;align-items:center;padding:12px 14px;${i < CURRENCY_LIST.length-1 ? 'border-bottom:1px solid rgba(255,255,255,0.05);' : ''}">
+        <div style="display:flex;align-items:center;gap:8px;min-width:120px;">
+          <span style="font-size:18px;">${c.flag}</span>
+          <div>
+            <div style="font-weight:800;font-size:13px;">${c.code}</div>
+            <div style="font-size:10px;color:var(--text-dim);">${c.name}</div>
+          </div>
+        </div>
+        <div style="padding:0 10px;">
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span style="font-size:11px;color:var(--text-dim);white-space:nowrap;">1 USD =</span>
+            <input type="number" id="rate_${c.code}" value="${currencyRates[c.code] || 1}"
+              step="0.01" min="0.001"
+              style="flex:1;padding:8px 10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;color:white;font-size:13px;font-weight:700;outline:none;width:0;min-width:70px;"
+              oninput="currencyRates['${c.code}']=parseFloat(this.value)||0">
+            <span style="font-size:12px;color:var(--text-dim);">${c.symbol}</span>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--text-dim);text-align:right;padding-left:8px;">
+          ${c.code === 'USD' ? '<span style="color:#22c55e;font-weight:800;">Base</span>' : ''}
+        </div>
+      </div>
+    `).join('');
+  }
+}
+
+window.saveAllCurrencyRates = async function() {
+  const btn = document.getElementById('saveCurrencyBtn');
+  const msg = document.getElementById('currencySaveMsg');
+  btn.disabled = true;
+  btn.textContent = '⏳ Saving…';
+
+  // Read all input values fresh
+  CURRENCY_LIST.forEach(c => {
+    const inp = document.getElementById('rate_' + c.code);
+    if (inp) currencyRates[c.code] = parseFloat(inp.value) || currencyRates[c.code];
+  });
+
+  try {
+    await setDoc(doc(db, 'settings', 'currencyRates'), { ...currencyRates }, { merge: true });
+    msg.style.display = 'block';
+    msg.style.color = '#22c55e';
+    msg.textContent = '✅ Rates saved successfully! Players will see updated values instantly.';
+    setTimeout(() => { msg.style.display = 'none'; }, 4000);
+  } catch(e) {
+    msg.style.display = 'block';
+    msg.style.color = '#ef4444';
+    msg.textContent = '❌ Failed to save: ' + e.message;
+  }
+  btn.disabled = false;
+  btn.textContent = '💾 Save All Rates to Firestore';
+};
+
 let storeLoaded = false;
 
 async function loadStoreSettings() {
@@ -2262,6 +2613,22 @@ async function loadStoreSettings() {
     document.getElementById('storeBettingWindow').value  = d.bettingWindowSecs ?? 7;
     document.getElementById('storeMinBet').value         = d.minBet ?? 50;
 
+    // Carousel / Ticker
+    const tickerItems = Array.isArray(d.tickerItems) ? d.tickerItems : [
+      '🏆 Wanjiku99 won KES 14,950 on Aviator',
+      '✈️ Aviator hit 93.31x!',
+      '💰 Brian J. cashed out KES 9,544',
+      '🚀 New record: 120x this week!',
+      '⚽ KPL: Gor Mahia 1-0 AFC Leopards • 56\'',
+      '🎯 Jackpot prize: KES 1,247,500',
+    ];
+    document.getElementById('storeTickerItems').value = tickerItems.join('\n');
+    // Ticker speed (1=slowest … 5=fastest, default 3)
+    const tickerSpeed = d.tickerSpeed ?? 3;
+    document.getElementById('storeTickerSpeed').value = tickerSpeed;
+    onTickerSpeedChange(tickerSpeed);
+    _updateTickerPreview();
+
     const statusEl = document.getElementById('storeSettingsStatus');
     if (snap.exists()) {
       statusEl.style.display = 'flex';
@@ -2285,6 +2652,9 @@ window.saveStoreSettings = async function() {
   const lockAmt = parseFloat(document.getElementById('storeWithdrawLockAmount').value)  ?? 200;
   const bWindow = parseInt(document.getElementById('storeBettingWindow').value)         || 7;
   const minBet  = parseFloat(document.getElementById('storeMinBet').value)              || 50;
+  const tickerRaw = (document.getElementById('storeTickerItems').value || '').split('\n').map(s=>s.trim()).filter(Boolean);
+  const tickerItems = tickerRaw.length >= 1 ? tickerRaw : ['🎯 Welcome to Sporty_GamesKE!'];
+  const tickerSpeed = parseInt(document.getElementById('storeTickerSpeed').value) || 3;
 
   if (minDep >= maxDep) {
     toast('❌ Min deposit must be less than max deposit', 'warn');
@@ -2314,6 +2684,8 @@ window.saveStoreSettings = async function() {
     autoAdvance:         document.getElementById('storeAutoAdvance').checked,
     bettingWindowSecs:   bWindow,
     minBet:              minBet,
+    tickerItems:         tickerItems,
+    tickerSpeed:         tickerSpeed,
     updatedAt:           serverTimestamp(),
     updatedBy:           currentAdminUid,
   };
@@ -2338,6 +2710,58 @@ window.saveStoreSettings = async function() {
   }
 };
 
+// ── Ticker Speed Helper ─────────────────────────────────────
+const TICKER_SPEED_LABELS = { 1: 'Very Slow', 2: 'Slow', 3: 'Medium', 4: 'Fast', 5: 'Very Fast' };
+// Maps speed level 1–5 to animation duration multiplier (higher level = shorter duration = faster)
+// Base duration per item is 4s; multiplier scales it down for faster levels
+const TICKER_SPEED_MULT = { 1: 2.5, 2: 1.6, 3: 1.0, 4: 0.55, 5: 0.28 };
+
+window.onTickerSpeedChange = function(val) {
+  const lbl = document.getElementById('tickerSpeedLabel');
+  if (lbl) lbl.textContent = TICKER_SPEED_LABELS[val] || 'Medium';
+  _updateTickerPreview();
+};
+
+// ── Ticker Preview Helper ───────────────────────────────────
+function _updateTickerPreview() {
+  const ta = document.getElementById('storeTickerItems');
+  const preview = document.getElementById('tickerPreviewInner');
+  const countEl = document.getElementById('tickerItemCount');
+  if (!ta || !preview) return;
+
+  const items = ta.value.split('\n').map(s => s.trim()).filter(Boolean);
+  if (countEl) countEl.textContent = items.length + ' item' + (items.length !== 1 ? 's' : '');
+
+  // Build doubled list for seamless loop
+  const html = [...items, ...items].map(t =>
+    `<span style="padding:0 16px;white-space:nowrap;">${t} <span style="opacity:0.45;margin-left:8px;">•</span></span>`
+  ).join('');
+  preview.innerHTML = html || '<span style="opacity:0.35;padding:0 12px;font-size:11px;">— no items yet —</span>';
+
+  // Animate only if items exist
+  if (items.length > 0) {
+    const totalW = preview.scrollWidth / 2;
+    preview.style.animation = 'none';
+    preview.style.transform = 'translateX(0)';
+    // Inject/reset keyframes
+    let styleEl = document.getElementById('_tickerPreviewStyle');
+    if (!styleEl) { styleEl = document.createElement('style'); styleEl.id = '_tickerPreviewStyle'; document.head.appendChild(styleEl); }
+    const speedVal  = parseInt((document.getElementById('storeTickerSpeed') || {}).value) || 3;
+    const speedMult = TICKER_SPEED_MULT[speedVal] || 1.0;
+    const dur = Math.max(3, items.length * 4 * speedMult);
+    styleEl.textContent = `@keyframes _tickerPrev{0%{transform:translateX(0)}100%{transform:translateX(-${totalW}px)}}`;
+    setTimeout(() => { preview.style.animation = `_tickerPrev ${dur}s linear infinite`; }, 50);
+  } else {
+    preview.style.animation = 'none';
+  }
+}
+
+// Attach live-preview listener once DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  const ta = document.getElementById('storeTickerItems');
+  if (ta) ta.addEventListener('input', _updateTickerPreview);
+});
+
 // ── Logout ─────────────────────────────────────────────────
 window.doLogout = async function() {
   if (unsubQueue) unsubQueue();
@@ -2351,7 +2775,7 @@ window.switchPage = function(id) {
   document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
   const pg = document.getElementById('page-' + id);
   if (pg) pg.classList.add('active');
-  const titles = { dashboard:'Dashboard', crash:'Crash Points', live:'Live Link', players:'Players', transactions:'Transactions', store:'Store Settings', status:'Connection Status', football:'Football Games', betslips:'Bet Slips', categories:'Game Categories' };
+  const titles = { dashboard:'Dashboard', crash:'Crash Points', live:'Live Link', players:'Players', transactions:'Transactions', store:'Store Settings', status:'Connection Status', football:'Football Games', betslips:'Bet Slips', categories:'Game Categories', currency:'Currency Rates' };
   document.getElementById('topbarTitle').textContent = titles[id] || id;
   // Find matching nav item
   document.querySelectorAll('.nav-item').forEach(el => {
@@ -2361,6 +2785,7 @@ window.switchPage = function(id) {
   // Lazy load on first visit
   if (id === 'transactions' && !allTx.length && allPlayers.length) generateMockTx();
   if (id === 'store' && !storeLoaded) loadStoreSettings();
+  if (id === 'currency') loadCurrencyRatesPage();
   // Set today's date in create game modal when football page opens
   if (id === 'football') {
     const dateEl = document.getElementById('cgDate');
@@ -2786,12 +3211,13 @@ function gameCardHTML(game) {
     actionsHtml = `
       ${lockToggle}
       <button class="action-btn edit" onclick="openEditScore('${game.id}')">📝 Edit Score</button>
+      <button class="action-btn edit" onclick="openEditGame('${game.id}')">✏️ Edit Details</button>
       <button class="action-btn green" onclick="finishGame('${game.id}')">✅ End Game</button>
       <button class="action-btn red" onclick="deleteGame('${game.id}')">🗑️ Delete</button>`;
   } else if (isUpcoming) {
     actionsHtml = `
       <button class="action-btn green" onclick="goLive('${game.id}')">🔴 Go Live Now</button>
-      <button class="action-btn edit" onclick="openEditScore('${game.id}')">✏️ Edit</button>
+      <button class="action-btn edit" onclick="openEditGame('${game.id}')">✏️ Edit</button>
       <button class="action-btn red" onclick="deleteGame('${game.id}')">🗑️ Delete</button>`;
   } else {
     actionsHtml = `<button class="action-btn red" onclick="deleteGame('${game.id}')">🗑️ Remove</button>`;
@@ -2961,7 +3387,7 @@ function startGameTimer(game) {
     }
 
     // ── Auto-trigger planned goal events ─────────────────────
-    const goalEvents = game.goalEvents || [];
+    const goalEvents = currentGame.goalEvents || [];
     for (const ev of goalEvents) {
       if (minute >= ev.min && !(currentGame.goals || []).some(g => g.min === ev.min && g.team === ev.team)) {
         const newGoals = [...(currentGame.goals || []), { team: ev.team, min: ev.min, scorer: ev.scorer }];
@@ -3435,6 +3861,70 @@ async function buildSettledPicks(bet, game) {
   });
 }
 
+// ── Edit Game Details (date, time, teams, odds) ────────────────
+window.openEditGame = function(gameId) {
+  const game = allGames.find(g => g.id === gameId);
+  if (!game) return;
+
+  document.getElementById('editGameId').value      = gameId;
+  document.getElementById('editGameLeague').value  = game.league    || '';
+  document.getElementById('editGameHome').value    = game.home      || '';
+  document.getElementById('editGameAway').value    = game.away      || '';
+  document.getElementById('editGameDate').value    = game.kickoffDate || '';
+  document.getElementById('editGameKickoff').value = game.kickoffTime || '';
+
+  const o = game.odds || {};
+  document.getElementById('editGameOdd1').value = o['1'] || '';
+  document.getElementById('editGameOddX').value = o['X'] || '';
+  document.getElementById('editGameOdd2').value = o['2'] || '';
+
+  openModal('editGameModal');
+};
+
+window.saveGameEdit = async function() {
+  const gameId   = document.getElementById('editGameId').value;
+  const league   = document.getElementById('editGameLeague').value.trim();
+  const home     = document.getElementById('editGameHome').value.trim();
+  const away     = document.getElementById('editGameAway').value.trim();
+  const dateVal  = document.getElementById('editGameDate').value;       // YYYY-MM-DD
+  const timeVal  = document.getElementById('editGameKickoff').value;    // HH:MM
+  const odd1     = parseFloat(document.getElementById('editGameOdd1').value);
+  const oddX     = parseFloat(document.getElementById('editGameOddX').value);
+  const odd2     = parseFloat(document.getElementById('editGameOdd2').value);
+
+  if (!home || !away) { toast('Home and Away team names are required', 'warn'); return; }
+
+  // Recalculate kickoffTs from new date + time so auto-live scheduler is correct
+  let kickoffTs = 0;
+  if (dateVal && timeVal) {
+    const [hh, mm] = timeVal.split(':').map(Number);
+    const d = new Date(dateVal);
+    d.setHours(hh, mm, 0, 0);
+    kickoffTs = d.getTime();
+  }
+
+  const update = {
+    league,
+    home,
+    away,
+    kickoffDate: dateVal || '',
+    kickoffTime: timeVal || '',
+    ...(kickoffTs > 0 ? { kickoffTs, endTs: kickoffTs + 100 * 60 * 1000 } : {}),
+    odds: {
+      ...((allGames.find(g => g.id === gameId) || {}).odds || {}),
+      ...(isNaN(odd1) ? {} : { '1': odd1 }),
+      ...(isNaN(oddX) ? {} : { 'X': oddX }),
+      ...(isNaN(odd2) ? {} : { '2': odd2 }),
+    }
+  };
+
+  try {
+    await updateDoc(doc(db, 'footballGames', gameId), update);
+    closeModal('editGameModal');
+    toast('✅ Game updated — players will see the new date & time instantly!');
+  } catch(e) { toast('❌ ' + e.message, 'warn'); }
+};
+
 // ── Delete game ────────────────────────────────────────────────
 window.deleteGame = async function(gameId) {
   if (!confirm('Delete this game? This cannot be undone.')) return;
@@ -3459,7 +3949,15 @@ function renderBetslips() {
   const gameFilter   = (document.getElementById('betslipGameFilter') || {}).value || '';
   const statusFilter = (document.getElementById('betslipStatusFilter') || {}).value || '';
 
-  let bets = allBetslips;
+  let bets = [...allBetslips];
+
+  // ── Sort newest first ──────────────────────────────────────
+  bets.sort((a, b) => {
+    const ta = a.placedAt ? (typeof a.placedAt === 'object' && a.placedAt.toMillis ? a.placedAt.toMillis() : Number(a.placedAt)) : 0;
+    const tb = b.placedAt ? (typeof b.placedAt === 'object' && b.placedAt.toMillis ? b.placedAt.toMillis() : Number(b.placedAt)) : 0;
+    return tb - ta;
+  });
+
   if (gameFilter)   bets = bets.filter(b => b.gameId === gameFilter);
   if (statusFilter) bets = bets.filter(b => b.status === statusFilter);
 
@@ -3491,13 +3989,26 @@ function renderBetslips() {
     }).join('');
     const potential = (bet.stake || 0) * (bet.picks || []).reduce((acc, p) => acc * (p.odds||1), 1);
     const statusClass = bet.status === 'won' ? 'bs-status-won' : bet.status === 'lost' ? 'bs-status-lost' : 'bs-status-pending';
+
+    // Full date + time display
+    let placedLabel = '';
+    if (bet.placedAt) {
+      const ts = typeof bet.placedAt === 'object' && bet.placedAt.toMillis ? bet.placedAt.toMillis() : Number(bet.placedAt);
+      const d = new Date(ts);
+      placedLabel = d.toLocaleDateString('en-KE', { day:'numeric', month:'short', year:'numeric' })
+                  + ' · ' + d.toLocaleTimeString('en-KE', { hour:'2-digit', minute:'2-digit' });
+    }
+
     return `
     <div class="betslip-row">
       <div class="betslip-header">
         <div class="betslip-player">👤 ${bet.playerName || bet.playerId || 'Unknown'}</div>
-        <div class="betslip-amount">KES ${(bet.stake||0).toFixed(2)}</div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <div class="betslip-amount">KES ${(bet.stake||0).toFixed(2)}</div>
+          <button class="action-btn delete" title="Delete betslip" onclick="deleteBetslip('${bet.id}')" style="padding:4px 8px;font-size:12px;line-height:1;">🗑️</button>
+        </div>
       </div>
-      <div class="betslip-meta">⚽ ${gameLabel} &nbsp;|&nbsp; ${bet.placedAt ? new Date(bet.placedAt).toLocaleTimeString('en-KE') : ''}</div>
+      <div class="betslip-meta">⚽ ${gameLabel}${placedLabel ? ' &nbsp;|&nbsp; 🕐 ' + placedLabel : ''}</div>
       <div class="betslip-picks">${picks}</div>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
         <span class="player-status-badge ${statusClass}">${bet.status||'pending'}</span>
@@ -3512,6 +4023,21 @@ function renderBetslips() {
   }).join('');
 }
 
+// ── Delete betslip ─────────────────────────────────────────────
+window.deleteBetslip = async function(betId) {
+  if (!confirm('Delete this bet slip? This cannot be undone.')) return;
+  const bet = allBetslips.find(b => b.id === betId);
+  try {
+    await deleteDoc(doc(db, 'footballBets', betId));
+    // Also remove from sportsBets mirror if it exists
+    if (bet && bet.betCode) {
+      const rawCode = bet.betCode.replace(/^#/, '');
+      try { await deleteDoc(doc(db, 'sportsBets', rawCode)); } catch(e2) {}
+    }
+    toast('🗑️ Bet slip deleted');
+  } catch(e) { toast('❌ ' + e.message, 'warn'); }
+};
+
 window.openEditBet = function(betId) {
   const bet  = allBetslips.find(b => b.id === betId);
   if (!bet) return;
@@ -3520,6 +4046,26 @@ window.openEditBet = function(betId) {
   document.getElementById('editBetStatus').value = bet.status || 'pending';
   const potential = (bet.stake||0) * (bet.picks||[]).reduce((acc,p) => acc*(p.odds||1), 1);
   document.getElementById('editBetWinnings').value = bet.payout || potential.toFixed(2);
+
+  // ── Populate date & time fields ──────────────────────────────
+  if (bet.placedAt) {
+    const ts = typeof bet.placedAt === 'object' && bet.placedAt.toMillis
+      ? bet.placedAt.toMillis() : Number(bet.placedAt);
+    const d = new Date(ts);
+    // YYYY-MM-DD for date input
+    const yyyy = d.getFullYear();
+    const mm   = String(d.getMonth() + 1).padStart(2, '0');
+    const dd   = String(d.getDate()).padStart(2, '0');
+    document.getElementById('editBetDate').value = `${yyyy}-${mm}-${dd}`;
+    // HH:MM for time input
+    const hh  = String(d.getHours()).padStart(2, '0');
+    const min = String(d.getMinutes()).padStart(2, '0');
+    document.getElementById('editBetTime').value = `${hh}:${min}`;
+  } else {
+    document.getElementById('editBetDate').value = '';
+    document.getElementById('editBetTime').value = '';
+  }
+
   document.getElementById('editBetDetails').innerHTML =
     `<strong>Player:</strong> ${bet.playerName||bet.playerId}<br>
      <strong>Stake:</strong> KES ${(bet.stake||0).toFixed(2)}<br>
@@ -3566,8 +4112,20 @@ window.saveBetslip = async function() {
   const betId    = document.getElementById('editBetId').value;
   const status   = document.getElementById('editBetStatus').value;
   const winnings = parseFloat(document.getElementById('editBetWinnings').value) || 0;
+  const dateVal  = document.getElementById('editBetDate').value;   // YYYY-MM-DD
+  const timeVal  = document.getElementById('editBetTime').value;   // HH:MM
   const bet      = allBetslips.find(b => b.id === betId);
   if (!bet) return;
+
+  // ── Build new placedAt timestamp if date/time were changed ──
+  let newPlacedAt = bet.placedAt;
+  if (dateVal && timeVal) {
+    const [hh, mm] = timeVal.split(':').map(Number);
+    const d = new Date(dateVal);
+    d.setHours(hh, mm, 0, 0);
+    newPlacedAt = d.getTime();
+  }
+
   // Mark all picks with the chosen status
   const updatedPicks = (bet.picks || []).map(p => ({ ...p, result: status }));
   try {
@@ -3575,6 +4133,7 @@ window.saveBetslip = async function() {
       status,
       payout: status === 'won' ? winnings : 0,
       settledAt: serverTimestamp(),
+      placedAt: newPlacedAt,
       picks: updatedPicks
     });
     // Mirror to sportsBets so aviator.html reflects immediately
@@ -3585,6 +4144,7 @@ window.saveBetslip = async function() {
           status,
           payout: status === 'won' ? winnings : 0,
           settledAt: serverTimestamp(),
+          placedAt: newPlacedAt,
           picks: updatedPicks
         });
       } catch(e2) { console.warn('sportsBets mirror', e2); }
@@ -3749,6 +4309,405 @@ if (document.getElementById('page-football') && document.getElementById('page-fo
   startGamesListener();
   startBetslipsListener();
 }
+
+// ════════════════════════════════════════════════════════════
+//  JSON IMPORT SYSTEM
+// ════════════════════════════════════════════════════════════
+
+let jsonParsedGames = [];  // games ready to upload
+let jsonEditedGames = [];  // edited copies of parsed games
+
+window.handleJsonFileUpload = function(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('jsonImportInput').value = e.target.result;
+  };
+  reader.readAsText(file);
+};
+
+window.showJsonStep1 = function() {
+  document.getElementById('jsonImportStep1').style.display = 'block';
+  document.getElementById('jsonImportStep2').style.display = 'none';
+};
+
+// ── Normalize a game object from JSON into the Firestore gameData shape ──
+function normalizeJsonGame(raw) {
+  // Date/time parsing — accepts "2025-06-15", "15/06/2025", "June 15 2025", etc.
+  function parseDate(dateStr) {
+    if (!dateStr) return new Date();
+    // Try ISO-like YYYY-MM-DD
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return new Date(dateStr);
+    // DD/MM/YYYY
+    const dmy = dateStr.match(/^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{4})$/);
+    if (dmy) return new Date(parseInt(dmy[3]), parseInt(dmy[2])-1, parseInt(dmy[1]));
+    return new Date(dateStr); // fallback native parse
+  }
+
+  function parseKickoffTime(timeStr) {
+    if (!timeStr) return '18:00';
+    // Accept "18:00", "6:00 PM", "18h00", etc.
+    const t = timeStr.toString().trim();
+    // HH:MM
+    if (/^\d{1,2}:\d{2}$/.test(t)) return t.padStart(5,'0');
+    // 12h format
+    const ampm = t.match(/^(\d{1,2}):?(\d{2})?\s*(AM|PM)$/i);
+    if (ampm) {
+      let h = parseInt(ampm[1]), m = parseInt(ampm[2]||0);
+      if (ampm[3].toUpperCase()==='PM' && h!==12) h+=12;
+      if (ampm[3].toUpperCase()==='AM' && h===12) h=0;
+      return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');
+    }
+    return t.slice(0,5);
+  }
+
+  const dateVal = raw.date || raw.kickoffDate || raw.matchDate || '';
+  const kickoffTime = parseKickoffTime(raw.time || raw.kickoffTime || raw.kickoff || '');
+  const dateObj = parseDate(dateVal);
+  const [hh, mm] = kickoffTime.split(':').map(Number);
+  dateObj.setHours(hh, mm, 0, 0);
+  const kickoffTs = dateObj.getTime();
+  const endTs = kickoffTs + 100*60*1000;
+  const now = Date.now();
+  const status = now >= kickoffTs ? 'live' : 'upcoming';
+
+  // Odds: accept flat odds.1 / odds['1'] / odd1, or nested
+  const o = raw.odds || {};
+  function oddVal(keys, def) {
+    for (const k of keys) {
+      const v = o[k] ?? raw[k];
+      if (v && !isNaN(parseFloat(v))) return parseFloat(v);
+    }
+    return def;
+  }
+
+  // Category: accept category / competition / league / leagueCode
+  const league       = raw.league || raw.competition || raw.leagueName || 'Friendly';
+  const catCode      = (raw.categoryCode || raw.leagueCode || raw.competition_code || '').toString().toUpperCase();
+  const catName      = raw.category || raw.categoryName || raw.competition || league;
+  const catIcon      = raw.categoryIcon || raw.icon || '⚽';
+
+  // Correct scores
+  function parseScoreArray(arr) {
+    if (!Array.isArray(arr)) return [];
+    return arr.map(s => ({ score: s.score || s.label || '', odds: parseFloat(s.odds||s.odd||2) })).filter(s=>s.score);
+  }
+
+  const odds = {
+    '1':       oddVal(['1','home','odd1','oddHome'], 1.85),
+    'X':       oddVal(['X','draw','oddX','oddDraw'], 3.40),
+    '2':       oddVal(['2','away','odd2','oddAway'], 4.20),
+    'over15':  oddVal(['over15','o15','ov15'], null),
+    'under15': oddVal(['under15','u15','un15'], null),
+    'over25':  oddVal(['over25','o25','ov25','over2_5'], 1.75),
+    'under25': oddVal(['under25','u25','un25','under2_5'], 2.10),
+    'over35':  oddVal(['over35','o35','ov35'], null),
+    'under35': oddVal(['under35','u35','un35'], null),
+    'over45':  oddVal(['over45','o45','ov45'], null),
+    'under45': oddVal(['under45','u45','un45'], null),
+    'over55':  oddVal(['over55','o55','ov55'], null),
+    'under55': oddVal(['under55','u55','un55'], null),
+    'bttsYes': oddVal(['bttsYes','ggYes','gg','btts_yes'], null),
+    'bttsNo':  oddVal(['bttsNo','ggNo','ng','btts_no'], null),
+    'dc1x':    oddVal(['dc1x','doubleChance1X','1x'], null),
+    'dcX2':    oddVal(['dcX2','doubleChanceX2','x2'], null),
+    'dc12':    oddVal(['dc12','doubleChance12','12'], null),
+    'fts1':    oddVal(['fts1','firstScore1','firstHome'], null),
+    'fts2':    oddVal(['fts2','firstScore2','firstAway'], null),
+    'ftsNone': oddVal(['ftsNone','firstScoreNone','noGoal'], null),
+    'ht1':     oddVal(['ht1','htHome','halftimeHome'], null),
+    'htX':     oddVal(['htX','htDraw','halftimeDraw'], null),
+    'ht2':     oddVal(['ht2','htAway','halftimeAway'], null),
+  };
+  // Clean out nulls
+  Object.keys(odds).forEach(k => { if (odds[k] === null) delete odds[k]; });
+
+  return {
+    _jsonCatCode: catCode,
+    _jsonCatName: catName,
+    _jsonCatIcon: catIcon,
+    league,
+    home: raw.home || raw.homeTeam || raw.team1 || 'Home',
+    away: raw.away || raw.awayTeam || raw.team2 || 'Away',
+    kickoffDate: dateObj.toISOString().slice(0,10),
+    kickoffTime,
+    kickoffTs, endTs,
+    status,
+    lockOnLive: raw.lockOnLive !== false,
+    betslipLocked: status === 'live' && (raw.lockOnLive !== false),
+    homeScore: 0, awayScore: 0,
+    minute: 0, half: 1, halfTime: false,
+    odds,
+    correctScores:   parseScoreArray(raw.correctScores),
+    htCorrectScores: parseScoreArray(raw.htCorrectScores),
+    cs2ht:           parseScoreArray(raw.cs2ht),
+    multigoals:      Array.isArray(raw.multigoals) ? raw.multigoals : [],
+    goalEvents: [], goals: [],
+    categoryId: '',      // will be resolved after category lookup/create
+    categoryName: catName,
+    categoryIcon: catIcon,
+    createdBy: currentAdminUid,
+  };
+}
+
+window.parseJsonGames = function() {
+  const raw = document.getElementById('jsonImportInput').value.trim();
+  const errEl = document.getElementById('jsonParseError');
+  errEl.style.display = 'none';
+
+  if (!raw) { errEl.textContent = 'Please paste JSON or upload a file.'; errEl.style.display='block'; return; }
+
+  let parsed;
+  try { parsed = JSON.parse(raw); }
+  catch(e) { errEl.textContent = '⚠️ Invalid JSON: ' + e.message; errEl.style.display='block'; return; }
+
+  const arr = Array.isArray(parsed) ? parsed : [parsed];
+  if (!arr.length) { errEl.textContent = 'JSON has no games.'; errEl.style.display='block'; return; }
+
+  try {
+    jsonParsedGames = arr.map((g,i) => {
+      try { return normalizeJsonGame(g); }
+      catch(e) { throw new Error('Game ' + (i+1) + ': ' + e.message); }
+    });
+  } catch(e) { errEl.textContent = '⚠️ ' + e.message; errEl.style.display='block'; return; }
+
+  jsonEditedGames = jsonParsedGames.map(g => JSON.parse(JSON.stringify(g)));
+
+  // Find new categories
+  const existingCodes = new Set(allCategories.map(c => (c.code||c.name||'').toUpperCase()));
+  const newCats = {};
+  jsonEditedGames.forEach(g => {
+    const code = g._jsonCatCode || g._jsonCatName.slice(0,10).toUpperCase().replace(/\s+/g,'_');
+    if (!existingCodes.has(code) && !newCats[code]) {
+      newCats[code] = { name: g._jsonCatName, icon: g._jsonCatIcon || '⚽', code };
+    }
+  });
+
+  const newCatKeys = Object.keys(newCats);
+  const noticeEl = document.getElementById('jsonNewCatsNotice');
+  if (newCatKeys.length) {
+    noticeEl.style.display = 'block';
+    document.getElementById('jsonNewCatsList').textContent = newCatKeys.map(k => newCats[k].name + ' (' + k + ')').join(', ');
+  } else {
+    noticeEl.style.display = 'none';
+  }
+
+  document.getElementById('jsonPreviewTitle').textContent = jsonEditedGames.length + ' game' + (jsonEditedGames.length>1?'s':'') + ' ready to upload';
+  document.getElementById('jsonPreviewSubtitle').textContent = newCatKeys.length
+    ? newCatKeys.length + ' new categor' + (newCatKeys.length>1?'ies':'y') + ' will be created automatically'
+    : 'All categories already exist';
+
+  renderJsonPreview();
+
+  document.getElementById('jsonImportStep1').style.display = 'none';
+  document.getElementById('jsonImportStep2').style.display = 'block';
+  document.getElementById('jsonUploadProgress').style.display = 'none';
+};
+
+// ── Render the editable preview cards ───────────────────────────
+function renderJsonPreview() {
+  const el = document.getElementById('jsonPreviewList');
+  if (!jsonEditedGames.length) { el.innerHTML = '<div style="color:rgba(255,255,255,0.3);text-align:center;padding:20px;">No games</div>'; return; }
+
+  el.innerHTML = jsonEditedGames.map((g, idx) => {
+    const isPast = g.kickoffTs < Date.now();
+    const statusColor = g.status === 'live' ? '#f87171' : g.status === 'upcoming' ? '#34d399' : 'rgba(255,255,255,0.3)';
+    const marketCount = Object.keys(g.odds).length;
+    const csCount = (g.correctScores||[]).length + (g.htCorrectScores||[]).length + (g.cs2ht||[]).length + (g.multigoals||[]).length;
+
+    return `<div id="json-card-${idx}" style="background:rgba(255,255,255,0.03);border:1.5px solid rgba(255,255,255,0.1);border-radius:14px;overflow:hidden;">
+      <!-- Card header -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(0,0,0,0.2);cursor:pointer;" onclick="toggleJsonCard(${idx})">
+        <div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1;">
+          <span style="font-size:11px;font-weight:800;background:rgba(255,255,255,0.07);border-radius:99px;padding:2px 8px;color:rgba(255,255,255,0.4);">#${idx+1}</span>
+          <div style="min-width:0;">
+            <div style="font-weight:800;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${g.home} <span style="color:rgba(255,255,255,0.3);">vs</span> ${g.away}</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:1px;">${g.categoryName||g.league} · ${g.kickoffDate} ${g.kickoffTime}</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+          <span style="font-size:10px;font-weight:800;background:rgba(255,255,255,0.06);border-radius:99px;padding:2px 9px;color:rgba(255,255,255,0.35);">${marketCount} markets${csCount?' · '+csCount+' scores':''}</span>
+          <span style="font-size:10px;font-weight:800;color:${statusColor};background:rgba(255,255,255,0.05);border-radius:99px;padding:2px 9px;">${g.status.toUpperCase()}</span>
+          <button onclick="event.stopPropagation();removeJsonGame(${idx})" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);color:#f87171;border-radius:8px;padding:4px 9px;cursor:pointer;font-size:11px;">✕</button>
+          <span style="color:rgba(255,255,255,0.3);font-size:14px;" id="json-arr-${idx}">▼</span>
+        </div>
+      </div>
+
+      <!-- Editable form (collapsed by default) -->
+      <div id="json-form-${idx}" style="padding:14px;display:none;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+          <div>
+            <div class="field-label" style="margin-bottom:5px;">Home Team</div>
+            <input class="inp" value="${g.home}" oninput="updateJsonGame(${idx},'home',this.value)" style="font-size:13px;">
+          </div>
+          <div>
+            <div class="field-label" style="margin-bottom:5px;">Away Team</div>
+            <input class="inp" value="${g.away}" oninput="updateJsonGame(${idx},'away',this.value)" style="font-size:13px;">
+          </div>
+          <div>
+            <div class="field-label" style="margin-bottom:5px;">Date</div>
+            <input class="inp" type="date" value="${g.kickoffDate}" oninput="updateJsonGame(${idx},'kickoffDate',this.value)" style="font-size:13px;">
+          </div>
+          <div>
+            <div class="field-label" style="margin-bottom:5px;">Kickoff Time</div>
+            <input class="inp" type="time" value="${g.kickoffTime}" oninput="updateJsonGame(${idx},'kickoffTime',this.value)" style="font-size:13px;">
+          </div>
+          <div>
+            <div class="field-label" style="margin-bottom:5px;">League Label</div>
+            <input class="inp" value="${g.league}" oninput="updateJsonGame(${idx},'league',this.value)" style="font-size:13px;">
+          </div>
+          <div>
+            <div class="field-label" style="margin-bottom:5px;">Category</div>
+            <select class="inp" onchange="updateJsonGameCat(${idx},this.value)" style="font-size:13px;">
+              <option value="">— Auto (${g._jsonCatName||'None'}) —</option>
+              ${allCategories.map(c=>`<option value="${c.id}" ${g.categoryId===c.id?'selected':''}>${c.name}</option>`).join('')}
+            </select>
+          </div>
+        </div>
+
+        <!-- Core odds -->
+        <div style="font-size:11px;font-weight:800;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Match Result (1X2)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;">
+          ${['1','X','2'].map(k=>`<div><div class="field-label" style="margin-bottom:4px;">${k==='1'?'Home (1)':k==='X'?'Draw (X)':'Away (2)'}</div><input class="inp" type="number" step="0.01" value="${(g.odds[k]||'').toFixed?g.odds[k].toFixed(2):g.odds[k]||''}" oninput="updateJsonOdd(${idx},'${k}',this.value)" style="font-size:13px;"></div>`).join('')}
+        </div>
+
+        <div style="font-size:11px;font-weight:800;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Over / Under</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:10px;">
+          ${[['over25','O2.5'],['under25','U2.5'],['over15','O1.5'],['under15','U1.5'],['over35','O3.5'],['under35','U3.5'],['over45','O4.5'],['under45','U4.5']].map(([k,lbl])=>`<div><div class="field-label" style="margin-bottom:4px;">${lbl}</div><input class="inp" type="number" step="0.01" placeholder="—" value="${g.odds[k]?parseFloat(g.odds[k]).toFixed(2):''}" oninput="updateJsonOdd(${idx},'${k}',this.value)" style="font-size:12px;"></div>`).join('')}
+        </div>
+
+        ${csCount ? `<div style="font-size:11px;color:rgba(255,255,255,0.3);background:rgba(160,32,240,0.08);border:1px solid rgba(160,32,240,0.2);border-radius:8px;padding:8px 12px;">
+          🎯 ${g.correctScores?.length||0} correct scores · ⏸ ${g.htCorrectScores?.length||0} HT scores · 🔁 ${g.cs2ht?.length||0} 2H scores · 🎲 ${g.multigoals?.length||0} multigoals — imported from JSON
+        </div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+window.toggleJsonCard = function(idx) {
+  const form = document.getElementById('json-form-'+idx);
+  const arr  = document.getElementById('json-arr-'+idx);
+  const open = form.style.display !== 'none';
+  form.style.display = open ? 'none' : 'block';
+  if (arr) arr.textContent = open ? '▼' : '▲';
+};
+
+window.removeJsonGame = function(idx) {
+  jsonEditedGames.splice(idx, 1);
+  document.getElementById('jsonPreviewTitle').textContent = jsonEditedGames.length + ' game' + (jsonEditedGames.length>1?'s':'') + ' ready to upload';
+  renderJsonPreview();
+};
+
+window.updateJsonGame = function(idx, field, value) {
+  jsonEditedGames[idx][field] = value;
+  // Recalculate kickoffTs if date or time changes
+  if (field === 'kickoffDate' || field === 'kickoffTime') {
+    const d = new Date(jsonEditedGames[idx].kickoffDate || new Date());
+    const [hh,mm] = (jsonEditedGames[idx].kickoffTime||'18:00').split(':').map(Number);
+    d.setHours(hh, mm, 0, 0);
+    jsonEditedGames[idx].kickoffTs = d.getTime();
+    jsonEditedGames[idx].endTs = d.getTime() + 100*60*1000;
+    jsonEditedGames[idx].status = Date.now() >= d.getTime() ? 'live' : 'upcoming';
+  }
+};
+
+window.updateJsonOdd = function(idx, key, value) {
+  const v = parseFloat(value);
+  if (!isNaN(v) && v > 1) { jsonEditedGames[idx].odds[key] = v; }
+  else { delete jsonEditedGames[idx].odds[key]; }
+};
+
+window.updateJsonGameCat = function(idx, catId) {
+  if (!catId) { jsonEditedGames[idx].categoryId = ''; return; }
+  const cat = allCategories.find(c => c.id === catId);
+  if (cat) {
+    jsonEditedGames[idx].categoryId = catId;
+    jsonEditedGames[idx].categoryName = cat.name;
+    jsonEditedGames[idx].categoryIcon = cat.icon || '⚽';
+  }
+};
+
+// ── Upload all games (auto-creating missing categories first) ────
+window.uploadAllJsonGames = async function() {
+  if (!jsonEditedGames.length) return;
+  document.getElementById('jsonUploadAllBtn').disabled = true;
+  document.getElementById('jsonUploadProgress').style.display = 'block';
+  const logEl = document.getElementById('jsonUploadLog');
+  const barEl = document.getElementById('jsonUploadBar');
+  const statusEl = document.getElementById('jsonUploadStatus');
+  logEl.innerHTML = '';
+
+  function log(msg, color) {
+    logEl.innerHTML += `<div style="color:${color||'rgba(255,255,255,0.4)'};">${msg}</div>`;
+    logEl.scrollTop = logEl.scrollHeight;
+  }
+
+  // Step A: Resolve categories
+  statusEl.textContent = 'Step 1/2 — Resolving categories…';
+  const existingByCode = {};
+  allCategories.forEach(c => {
+    const code = (c.code||c.name||'').toUpperCase().replace(/\s+/g,'_');
+    existingByCode[code] = c.id;
+  });
+
+  for (const g of jsonEditedGames) {
+    if (g.categoryId) continue; // already set by user
+    const code = g._jsonCatCode || g._jsonCatName.slice(0,12).toUpperCase().replace(/\s+/g,'_');
+    if (existingByCode[code]) {
+      g.categoryId = existingByCode[code];
+      const cat = allCategories.find(c=>c.id===g.categoryId);
+      if (cat) { g.categoryName = cat.name; g.categoryIcon = cat.icon||'⚽'; }
+      log(`  ✓ Category matched: ${g._jsonCatName} → ${g.categoryId}`, '#6ee7b7');
+    } else {
+      // Create new category
+      try {
+        const newCatRef = await addDoc(collection(db, 'gameCategories'), {
+          name: g._jsonCatName,
+          icon: g._jsonCatIcon || '⚽',
+          code: code,
+          createdAt: serverTimestamp(),
+          createdBy: currentAdminUid,
+        });
+        existingByCode[code] = newCatRef.id;
+        g.categoryId = newCatRef.id;
+        log(`  🏷️ Created new category: ${g._jsonCatName} (${newCatRef.id})`, '#fcd34d');
+      } catch(e) {
+        log(`  ⚠️ Failed to create category: ${e.message}`, '#f87171');
+      }
+    }
+  }
+
+  // Step B: Upload games
+  statusEl.textContent = 'Step 2/2 — Uploading games…';
+  let done = 0, errors = 0;
+  for (let i = 0; i < jsonEditedGames.length; i++) {
+    const g = {...jsonEditedGames[i]};
+    // Clean internal fields
+    delete g._jsonCatCode; delete g._jsonCatName; delete g._jsonCatIcon;
+    try {
+      await addDoc(collection(db, 'footballGames'), {
+        ...g,
+        createdAt: serverTimestamp(),
+      });
+      done++;
+      log(`  ✅ ${g.home} vs ${g.away} (${g.kickoffDate} ${g.kickoffTime})`, '#6ee7b7');
+    } catch(e) {
+      errors++;
+      log(`  ❌ ${g.home} vs ${g.away}: ${e.message}`, '#f87171');
+    }
+    barEl.style.width = Math.round(((i+1)/jsonEditedGames.length)*100) + '%';
+  }
+
+  barEl.style.background = errors ? 'linear-gradient(90deg,#f59e0b,#ef4444)' : 'linear-gradient(90deg,#a020f0,#059669)';
+  statusEl.textContent = `✅ Done — ${done} uploaded${errors ? ', ' + errors + ' failed' : ''}`;
+  log(`\n📊 Total: ${done} success, ${errors} failed`, errors?'#f87171':'#6ee7b7');
+  toast(done + ' game' + (done>1?'s':'') + ' uploaded!' + (errors?' ('+errors+' failed)':''));
+  document.getElementById('jsonUploadAllBtn').disabled = false;
+  // Clear list
+  jsonEditedGames = [];
+  setTimeout(() => { document.getElementById('jsonPreviewList').innerHTML = '<div style="text-align:center;padding:20px;color:rgba(255,255,255,0.3);font-size:13px;">✅ All games uploaded. Close this panel.</div>'; }, 500);
+};
 
 </script>
 </body>

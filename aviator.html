@@ -41,6 +41,12 @@
     .inp::placeholder { color: rgba(255,255,255,0.28); }
     .inp:disabled { opacity: 0.5; }
     @keyframes crashGlow { 0%,100%{text-shadow:0 0 18px rgba(255,255,255,0.3)} 50%{text-shadow:0 0 40px rgba(255,60,60,1)} }
+    @keyframes avTicker  { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+    .av-ticker-wrap  { overflow:hidden; background:#1d4ed8; border-bottom:1px solid rgba(255,255,255,0.08); }
+    .av-ticker-inner { display:flex; white-space:nowrap; animation:avTicker 30s linear infinite; will-change:transform; }
+    .av-ticker-inner:hover { animation-play-state:paused; }
+    .av-ticker-item  { display:inline-flex; align-items:center; padding:5px 18px; font-size:11.5px; font-weight:700; color:white; flex-shrink:0; }
+    .av-ticker-sep   { color:rgba(255,255,255,0.4); margin-left:10px; }
     @keyframes fadeSlide { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
     @keyframes slideUp   { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
     @keyframes slideLeft { from{transform:translateX(-100%)} to{transform:translateX(0)} }
@@ -208,7 +214,7 @@
     </button>
     <span class="text-blue-500 font-black text-base tracking-tighter flex-shrink-0">Bet_At_Home<span class="text-white/30 font-light">.site</span></span>
     <div class="flex items-center gap-1.5 bg-black rounded-3xl px-3 py-1.5 ml-auto">
-      <span class="text-blue-400 font-black text-xs">KES</span>
+      <span id="avHdrCurrLabel" class="text-blue-400 font-black text-xs">KES</span>
       <span id="balDisplay" class="font-black text-base text-white font-mono">0</span>
       <button onclick="openDeposit()" class="bg-blue-500 text-white font-bold px-3 py-1 rounded-3xl text-xs ml-1">+ DEPOSIT</button>
     </div>
@@ -216,6 +222,17 @@
       <span class="text-emerald-400 dot-pulse">●</span>
       <span id="onlineCount" class="ml-1 font-mono text-xs">84</span>
     </div>
+  </div>
+
+  <!-- TICKER BAR -->
+  <div class="av-ticker-wrap" id="avTickerWrap" style="display:none;">
+    <div class="av-ticker-inner" id="avTickerInner"></div>
+  </div>
+
+  <!-- CURRENCY SWITCHER BAR -->
+  <div style="display:flex;align-items:center;gap:6px;padding:5px 12px;background:#0d0d0d;border-bottom:1px solid rgba(255,255,255,0.06);overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;">
+    <span style="font-size:10px;font-weight:800;color:rgba(255,255,255,0.25);white-space:nowrap;flex-shrink:0;">💱</span>
+    <div id="avCurrencySwitcherBar" style="display:flex;gap:5px;min-width:max-content;"></div>
   </div>
 
   <!-- SPORTS SCREEN -->
@@ -244,7 +261,7 @@
     </div>
     <div id="gamesList" class="px-3 pt-3 pb-4"></div>
     <footer>
-      <div class="flex items-center gap-2 mb-4"><span class="text-blue-500 font-black text-lg tracking-tighter">Bet_At_Home<span class="text-white/30 font-light">.site</span></span></div>
+      <div class="flex items-center gap-2 mb-4"><span class="text-blue-500 font-black text-lg tracking-tighter">Bet_At_Home<span class="text-white/30 font-light">.Site</span></span></div>
       <div class="grid grid-cols-2 gap-3 mb-4 text-xs text-white/40">
         <div><div class="font-bold text-white/60 mb-2">Games</div><div onclick="navTo('sports')" class="cursor-pointer py-0.5">Sports Betting</div><div onclick="navTo('aviator')" class="cursor-pointer py-0.5">Aviator</div><div onclick="navTo('live')" class="cursor-pointer py-0.5">Live Betting</div><div onclick="navTo('jackpot')" class="cursor-pointer py-0.5">Jackpot</div></div>
         <div><div class="font-bold text-white/60 mb-2">Account</div><div onclick="navTo('mybets')" class="cursor-pointer py-0.5">My Bets</div><div onclick="navTo('profile')" class="cursor-pointer py-0.5">Profile</div><div onclick="openDeposit()" class="cursor-pointer py-0.5">Deposit</div><div onclick="openWithdraw()" class="cursor-pointer py-0.5">Withdraw</div></div>
@@ -395,7 +412,7 @@
       <div id="avBetHistoryList" class="bg-[#0d0d0d] rounded-2xl overflow-hidden" style="max-height:320px;overflow-y:auto;"></div>
     </div>
     <div class="h-4"></div>
-    <footer><div class="text-white/20 text-xs text-center">© 2026 Bet_At_Home.site<br><span class="text-yellow-500/60">⚠️ Gambling is addictive. Play responsibly. 18+</span></div></footer>
+    <footer><div class="text-white/20 text-xs text-center">© 2026 Sporty_GamesKE<br><span class="text-yellow-500/60">⚠️ Gambling is addictive. Play responsibly. 18+</span></div></footer>
   </div>
 
   <!-- LIVE SCREEN -->
@@ -416,7 +433,7 @@
       <div class="text-6xl mb-3">🏆</div>
       <div class="font-black text-2xl mb-1 text-yellow-400">MEGA JACKPOT</div>
       <div class="text-white/50 text-sm mb-5">Pick 13 correct outcomes to win</div>
-      <div class="bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 rounded-3xl p-6 mb-4">
+      <div class="bg-gradient-to-br from-blue-500/20 to-blue-700/20 border border-blue-500/30 rounded-3xl p-6 mb-4">
         <div class="text-xs text-white/40 mb-1 font-bold uppercase tracking-wider">Current Pot</div>
         <div class="text-5xl font-black text-yellow-400 font-mono">KES 50M</div>
         <div class="text-white/30 text-xs mt-1">Rollover jackpot</div>
@@ -474,14 +491,14 @@
       </div>
       <div class="bg-[#120022] border border-purple-500/25 rounded-2xl px-4 py-3 mb-4 flex items-center justify-between">
         <div class="text-xs text-white/40 font-bold">AVAILABLE BALANCE</div>
-        <div class="font-black font-mono text-blue-400">KES <span id="slipBalDisplay">0</span></div>
+        <div class="font-black font-mono text-blue-400"><span id="avSlipBalSym">KES</span> <span id="slipBalDisplay">0</span></div>
       </div>
       <div id="betslipSelections" class="space-y-2 mb-4"></div>
       <div id="betslipEmpty" class="text-center py-10 hidden"><div class="text-4xl mb-3">🎯</div><div class="text-white/40 text-sm">No selections yet<br>Go to Sports to add games</div></div>
       <div id="betslipStakeArea" class="hidden">
         <div class="bg-[#111] border border-white/8 rounded-2xl px-4 py-3 mb-3">
-          <div class="text-xs text-white/40 font-bold mb-2 uppercase tracking-wider">Stake Amount (KES)</div>
-          <input id="slipStake" type="number" min="50" placeholder="Min. KES 50" class="inp text-center text-2xl font-mono" oninput="updateSlipSummary()">
+          <div class="text-xs text-white/40 font-bold mb-2 uppercase tracking-wider">Stake Amount (<span id="betslipStakeCurrLabel">KES</span>)</div>
+          <input id="slipStake" type="number" class="inp text-center text-2xl font-mono" oninput="updateSlipSummary()"><!-- min/placeholder set dynamically by _applyStoreConfigToUI -->
           <div class="grid grid-cols-4 gap-2 mt-3">
             <button onclick="setSlipStake(50)" class="chip text-xs py-2">50</button>
             <button onclick="setSlipStake(100)" class="chip text-xs py-2">100</button>
@@ -517,7 +534,7 @@
         </div>
       </div>
       <div class="grid grid-cols-2 gap-3 mb-5">
-        <div class="stat-card"><div class="text-xs text-white/35 font-bold uppercase tracking-wider mb-1">Balance</div><div class="text-xl font-black font-mono text-blue-400">KES <span id="profileBal">0</span></div></div>
+        <div class="stat-card"><div class="text-xs text-white/35 font-bold uppercase tracking-wider mb-1">Balance</div><div class="text-xl font-black font-mono text-blue-400"><span id="avProfileBalSym">KES</span> <span id="profileBal">0</span></div></div>
         <div class="stat-card"><div class="text-xs text-white/35 font-bold uppercase tracking-wider mb-1">Total Deposited</div><div class="text-xl font-black font-mono text-white">KES <span id="profileDeposited">0</span></div></div>
         <div class="stat-card"><div class="text-xs text-white/35 font-bold uppercase tracking-wider mb-1">Total Won</div><div class="text-xl font-black font-mono text-emerald-400">KES <span id="profileWon">0</span></div></div>
         <div class="stat-card"><div class="text-xs text-white/35 font-bold uppercase tracking-wider mb-1">Total Withdrawn</div><div class="text-xl font-black font-mono text-purple-400">KES <span id="profileWithdrawn">0</span></div></div>
@@ -525,7 +542,7 @@
       <div class="space-y-3 mb-5">
         <div class="profile-menu-item" onclick="openWallet()"><div class="w-10 h-10 bg-blue-500/15 rounded-2xl flex items-center justify-center text-xl">💼</div><div class="flex-1"><div class="font-bold">My Wallet</div><div class="text-white/40 text-xs">Transactions &amp; history</div></div><span class="text-white/30">›</span></div>
         <div class="profile-menu-item" onclick="navTo('mybets')"><div class="w-10 h-10 bg-blue-500/15 rounded-2xl flex items-center justify-center text-xl">📋</div><div class="flex-1"><div class="font-bold">My Bets</div><div class="text-white/40 text-xs">Bet history &amp; results</div></div><span class="text-white/30">›</span></div>
-        <div class="profile-menu-item" onclick="openDeposit()"><div class="w-10 h-10 bg-green-500/15 rounded-2xl flex items-center justify-center text-xl">📱</div><div class="flex-1"><div class="font-bold">Deposit via M-Pesa</div><div class="text-white/40 text-xs">Instant · Min KES 100</div></div><span class="text-white/30">›</span></div>
+        <div class="profile-menu-item" onclick="openDeposit()"><div class="w-10 h-10 bg-green-500/15 rounded-2xl flex items-center justify-center text-xl">📱</div><div class="flex-1"><div class="font-bold">Deposit via M-Pesa</div><div class="text-white/40 text-xs">Instant · Min KES <span id="profileMinDep">—</span></div></div><span class="text-white/30">›</span></div>
         <div class="profile-menu-item" onclick="openWithdraw()"><div class="w-10 h-10 bg-purple-500/15 rounded-2xl flex items-center justify-center text-xl">⬇️</div><div class="flex-1"><div class="font-bold">Withdraw Funds</div><div class="text-white/40 text-xs">M-Pesa, Airtel, Bank</div></div><span class="text-white/30">›</span></div>
       </div>
       <button onclick="doLogout()" class="btn-red w-full py-4 text-base font-black rounded-2xl">🚪 Sign Out</button>
@@ -533,6 +550,20 @@
   </div>
 
 </div><!-- end mainApp -->
+
+<!-- COUNTRY / PAYMENT METHOD SELECTOR MODAL -->
+<div id="countryPayModal" style="display:none;position:fixed;inset:0;z-index:9100;background:#0a0a0a;flex-direction:column;overflow-y:auto;">
+  <!-- Header -->
+  <div style="flex-shrink:0;background:#111;border-bottom:1px solid rgba(255,255,255,0.08);padding:12px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:2;">
+    <button onclick="closeCountryPayModal()" style="width:36px;height:36px;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.12);border-radius:12px;color:white;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">‹</button>
+    <div style="font-weight:900;font-size:17px;">Select Country &amp; Method</div>
+  </div>
+  <!-- Body -->
+  <div style="padding:20px 16px 40px;max-width:420px;margin:0 auto;width:100%;">
+    <p style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:20px;text-align:center;">Choose your country to see available payment methods.</p>
+    <div id="countryPayList"></div>
+  </div>
+</div>
 
 <!-- DEPOSIT SCREEN -->
 <div id="depositScreen" class="overlay-screen">
@@ -552,13 +583,13 @@
       <button onclick="setDepAmt(10000)" class="bg-[#111] border border-white/10 py-4 rounded-2xl font-black text-sm">KES<br>10,000</button>
     </div>
     <div class="text-white/30 text-xs text-center mb-3">— or enter custom amount —</div>
-    <input id="depInput" type="number" min="100" placeholder="Amount (KES min. 100)" class="inp text-center text-xl font-mono mb-4">
+    <input id="depInput" type="number" class="inp text-center text-xl font-mono mb-4" placeholder="Amount (KES)">
     <div class="mb-5">
       <label class="text-xs font-bold text-white/40 uppercase tracking-wider block mb-2">M-Pesa Number</label>
       <div class="inp flex items-center justify-between" style="cursor:default;"><span id="depPhoneDisplay" class="text-white font-bold text-lg font-mono">—</span><span class="text-xs text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/25 px-3 py-1 rounded-full">✔ VERIFIED</span></div>
     </div>
     <button id="depBtn" onclick="initiateDeposit()" class="btn-orange w-full py-5 text-xl flex items-center justify-center gap-3"><span id="depBtnTxt">PAY WITH M-PESA</span></button>
-    <p class="text-center text-white/20 text-xs mt-4" id="minDepNote">Minimum deposit: KES 100 · Powered by PayHero</p>
+    <p class="text-center text-white/20 text-xs mt-4" id="minDepNote">Minimum deposit: KES — · Powered by PayHero</p>
   </div>
   <div id="depStep2" style="display:none" class="flex-1 px-5 pt-8 pb-10 max-w-sm mx-auto w-full flex flex-col items-center justify-center text-center">
     <div id="depPending" class="flex-col items-center justify-center gap-4 w-full" style="display:none">
@@ -705,15 +736,148 @@
 
 <script type="module">
 'use strict';
-const FIREBASE_CONFIG={apiKey:"AIzaSyCyQ0cigKNumeGJsJkuu0tSLz-XuwZkhV8",authDomain:"aviator-8dcbc.firebaseapp.com",projectId:"aviator-8dcbc",storageBucket:"aviator-8dcbc.firebasestorage.app",messagingSenderId:"535296019197",appId:"1:535296019197:web:0616256e7f10a225368c94",measurementId:"G-QQQSV94CXJ"};
-const BACKEND_URL="https://sportybet-jjiu.onrender.com";
+const FIREBASE_CONFIG = {
+  apiKey:            "AIzaSyCyQ0cigKNumeGJsJkuu0tSLz-XuwZkhV8",
+  authDomain:        "aviator-8dcbc.firebaseapp.com",
+  projectId:         "aviator-8dcbc",
+  storageBucket:     "aviator-8dcbc.firebasestorage.app",
+  messagingSenderId: "535296019197",
+  appId:             "1:535296019197:web:0616256e7f10a225368c94"
+};
+const BACKEND_URL="https://kon-q8kg.onrender.com";
 import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
 import{getAuth,signOut,onAuthStateChanged}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 import{getFirestore,doc,getDoc,setDoc,updateDoc,deleteDoc,arrayUnion,increment,serverTimestamp,onSnapshot,collection,addDoc,getDocs,query,orderBy}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 const app=initializeApp(FIREBASE_CONFIG);const auth=getAuth(app);const db=getFirestore(app);
 let USER=null,userData=null,balance=0,crashHist=[2.30,2.28,1.74,2.29,28.70,1.05,4.10,93.31],unsubUser=null;
-let storeConfig={depositsEnabled:true,minDeposit:100,maxDeposit:100000,withdrawalsEnabled:true,minWithdrawal:200,maxWithdrawal:50000,withdrawLockAmount:500,minBet:50};
+let storeConfig={depositsEnabled:true,minDeposit:100,maxDeposit:100000,withdrawalsEnabled:true,minWithdrawal:200,maxWithdrawal:50000,withdrawLockAmount:500,minBet:50,tickerItems:[]};
 let unsubStore=null;
+
+// ── CURRENCY SYSTEM ──────────────────────────────────────────────────────
+const AV_CURRENCIES = [
+  { code:'KES', symbol:'KES', flag:'🇰🇪', name:'Kenyan Shilling' },
+  { code:'ZWL', symbol:'ZWL', flag:'🇿🇼', name:'Zimbabwe Dollar' },
+  { code:'NAD', symbol:'NAD', flag:'🇳🇦', name:'Namibian Dollar' },
+  { code:'ZAR', symbol:'R',   flag:'🇿🇦', name:'South African Rand' },
+  { code:'NGN', symbol:'₦',   flag:'🇳🇬', name:'Nigerian Naira' },
+  { code:'GHS', symbol:'GH₵', flag:'🇬🇭', name:'Ghanaian Cedi' },
+  { code:'TZS', symbol:'TZS', flag:'🇹🇿', name:'Tanzanian Shilling' },
+  { code:'UGX', symbol:'UGX', flag:'🇺🇬', name:'Ugandan Shilling' },
+  { code:'USD', symbol:'$',   flag:'🇺🇸', name:'US Dollar' },
+  { code:'GBP', symbol:'£',   flag:'🇬🇧', name:'British Pound' },
+];
+
+let AV_CURRENCY_RATES_VS_USD = {
+  KES:129, ZWL:322, NAD:18.7, ZAR:18.7, NGN:1600,
+  GHS:15.2, TZS:2650, UGX:3750, USD:1, GBP:0.79
+};
+
+// Load persisted currency choice
+let avActiveCurrency = (() => {
+  try { const s=localStorage.getItem('av_currency'); if(s){ const c=AV_CURRENCIES.find(x=>x.code===s); if(c) return c; } } catch(e){}
+  return AV_CURRENCIES[0]; // default KES
+})();
+
+// Live Firestore rates sync
+(async()=>{
+  try {
+    const snap = await getDoc(doc(db,'settings','currencyRates'));
+    if(snap.exists()) Object.assign(AV_CURRENCY_RATES_VS_USD, snap.data());
+  } catch(_){}
+})();
+onSnapshot(doc(db,'settings','currencyRates'), snap=>{
+  if(snap.exists()){ Object.assign(AV_CURRENCY_RATES_VS_USD, snap.data()); avRefreshCurrencyDisplay(); }
+});
+
+function avConvertFromKES(kesAmount){
+  const kesPerUsd = AV_CURRENCY_RATES_VS_USD['KES'] || 129;
+  const targPerUsd = AV_CURRENCY_RATES_VS_USD[avActiveCurrency.code] || 1;
+  return (kesAmount / kesPerUsd) * targPerUsd;
+}
+
+function avFmtCurrency(kesAmount){
+  const v = avConvertFromKES(kesAmount);
+  const sym = avActiveCurrency.symbol;
+  if(v >= 1000000) return sym + (v/1000000).toFixed(2)+'M';
+  if(v >= 1000)    return sym + (v/1000).toFixed(1)+'K';
+  return sym + v.toFixed(2);
+}
+
+function avFmtExact(kesAmount){
+  const v = avConvertFromKES(kesAmount);
+  return avActiveCurrency.symbol + v.toFixed(2);
+}
+
+window.avSwitchCurrency = function(code){
+  const c = AV_CURRENCIES.find(x=>x.code===code); if(!c) return;
+  avActiveCurrency = c;
+  try { localStorage.setItem('av_currency', code); } catch(e){}
+  avRefreshCurrencyDisplay();
+  avBuildCurrencySwitcher();
+};
+
+function avBuildCurrencySwitcher(){
+  const bar = document.getElementById('avCurrencySwitcherBar'); if(!bar) return;
+  bar.innerHTML = AV_CURRENCIES.map(c=>`
+    <button onclick="avSwitchCurrency('${c.code}')" style="
+      display:inline-flex;align-items:center;gap:4px;padding:5px 11px;
+      border-radius:20px;border:1.5px solid ${c.code===avActiveCurrency.code?'#a020f0':'rgba(255,255,255,0.12)'};
+      background:${c.code===avActiveCurrency.code?'rgba(160,32,240,0.15)':'rgba(255,255,255,0.05)'};
+      color:${c.code===avActiveCurrency.code?'#c084fc':'rgba(255,255,255,0.5)'};
+      font-size:11px;font-weight:800;cursor:pointer;white-space:nowrap;flex-shrink:0;
+      transition:all 0.2s;">${c.flag} ${c.code}</button>
+  `).join('');
+}
+
+function avRefreshCurrencyDisplay(){
+  const sym = avActiveCurrency.symbol;
+
+  // Header balance label
+  const hdrLbl = document.getElementById('avHdrCurrLabel');
+  if(hdrLbl) hdrLbl.textContent = sym;
+
+  // Update balance display
+  updateBalDisplay();
+
+  // Update bet labels for both slots
+  for(const slot of [1,2]){
+    const lbl = document.getElementById('betLbl'+slot);
+    if(lbl && bets && bets[slot]) lbl.textContent = avFmtExact(bets[slot].amount);
+    const actAmt = document.getElementById('activeBetAmt'+slot);
+    if(actAmt && bets && bets[slot] && bets[slot].active){
+      actAmt.textContent = avFmtExact(bets[slot].amount);
+    }
+  }
+
+  // Quick chips in bet panels
+  [100,200,500,1000].forEach(k=>{
+    document.querySelectorAll(`[data-kes-chip="${k}"]`).forEach(el=>{
+      el.textContent = avFmtExact(k);
+    });
+  });
+
+  // Betslip stake area
+  const slipBal = document.getElementById('slipBalDisplay');
+  if(slipBal) slipBal.textContent = avFmtExact(balance);
+
+  // Sports betslip potential win
+  const slipWin = document.getElementById('slipWin');
+  if(slipWin){ /* will be recalc'd by updateSlipSummary */ }
+  if(typeof updateSlipSummary === 'function') updateSlipSummary();
+
+  // Withdraw panel
+  const wdBal = document.getElementById('wdBalDisplay');
+  if(wdBal) wdBal.textContent = avConvertFromKES(balance).toFixed(2);
+  const minWd = document.getElementById('minWdInlineNote');
+  if(minWd) minWd.textContent = avFmtExact(storeConfig.minWithdrawal||200);
+
+  // Rebuild switcher pills
+  avBuildCurrencySwitcher();
+
+  // Betslip stake label
+  const bsl = document.getElementById('betslipStakeCurrLabel');
+  if(bsl) bsl.textContent = sym;
+}
 
 // ── SPORTS DATA ──
 // All games come from Firestore — no hardcoded games
@@ -1373,7 +1537,8 @@ window.updateSlipSummary=function(){
   const totalOdds=betslipSelections.reduce((a,s)=>a*s.odds,1);
   const potWin=Math.floor(stake*totalOdds);
   const sum=document.getElementById('slipSummary');
-  if(stake>=50){sum.classList.remove('hidden');document.getElementById('slipCount').textContent=betslipSelections.length;document.getElementById('slipOdds').textContent=totalOdds.toFixed(2);document.getElementById('slipWin').textContent='KES '+potWin.toLocaleString();}
+  const minBet=storeConfig.minBet||50;
+  if(stake>=minBet){sum.classList.remove('hidden');document.getElementById('slipCount').textContent=betslipSelections.length;document.getElementById('slipOdds').textContent=totalOdds.toFixed(2);document.getElementById('slipWin').textContent=typeof avFmtExact==='function'?avFmtExact(potWin):'KES '+potWin.toLocaleString();}
   else sum.classList.add('hidden');
 };
 // ── BET CODE GENERATOR ──
@@ -1415,7 +1580,7 @@ window.placeSportsBet=async function(){
     return;
   }
   const stake=parseFloat(document.getElementById('slipStake').value)||0;
-  if(stake<50){showToast('Minimum stake is KES 50','red');return;}
+  if(stake<storeConfig.minBet){showToast(`Minimum stake is ${typeof avFmtExact==='function'?avFmtExact(storeConfig.minBet):'KES '+storeConfig.minBet.toLocaleString()}`,'red');return;}
   if(stake>balance){showToast('Insufficient balance!','red');return;}
   const totalOdds=betslipSelections.reduce((a,s)=>a*s.odds,1);
   const potWin=Math.floor(stake*totalOdds);
@@ -1488,7 +1653,9 @@ function showBetCodeModal(code,stake,potWin,odds){
     document.body.appendChild(modal);
   }
   document.getElementById('bcModalCode').textContent=code;
-  document.getElementById('bcModalDetails').innerHTML=`<div><div style="color:rgba(255,255,255,0.35);">Stake</div><div style="font-weight:800;color:white;">KES ${stake.toLocaleString()}</div></div><div><div style="color:rgba(255,255,255,0.35);">Odds</div><div style="font-weight:800;color:#c084fc;">${parseFloat(odds).toFixed(2)}x</div></div><div><div style="color:rgba(255,255,255,0.35);">Pot Win</div><div style="font-weight:800;color:#34d399;">KES ${potWin.toLocaleString()}</div></div>`;
+  const stakeStr=typeof avFmtExact==='function'?avFmtExact(stake):'KES '+stake.toLocaleString();
+  const winStr=typeof avFmtExact==='function'?avFmtExact(potWin):'KES '+potWin.toLocaleString();
+  document.getElementById('bcModalDetails').innerHTML=`<div><div style="color:rgba(255,255,255,0.35);">Stake</div><div style="font-weight:800;color:white;">${stakeStr}</div></div><div><div style="color:rgba(255,255,255,0.35);">Odds</div><div style="font-weight:800;color:#c084fc;">${parseFloat(odds).toFixed(2)}x</div></div><div><div style="color:rgba(255,255,255,0.35);">Pot Win</div><div style="font-weight:800;color:#34d399;">${winStr}</div></div>`;
   modal.style.display='flex';
   window._lastBetCode=code;
 }
@@ -1540,11 +1707,12 @@ function buildBetCardHTML(b,isFirestore){
   const statusLabel=effectiveStatus.toUpperCase();
   const placedAt=b.placedAt||Date.now();
   const dateLabel=new Date(placedAt).toLocaleDateString('en-KE',{day:'2-digit',month:'2-digit'})+', '+new Date(placedAt).toLocaleTimeString('en-KE',{hour:'2-digit',minute:'2-digit'});
+  const _fmtC = typeof avFmtExact==='function' ? avFmtExact : (v)=>'KES '+Number(v).toLocaleString();
   const payoutText=effectiveStatus==='pending'
-    ?`<span style="color:#fbbf24;font-weight:800;">Pot Win: KES ${(b.potWin||b.potential||0).toLocaleString()}</span>`
+    ?`<span style="color:#fbbf24;font-weight:800;">Pot Win: ${_fmtC(b.potWin||b.potential||0)}</span>`
     :effectiveStatus==='won'
-    ?`<span style="color:#34d399;font-weight:800;">+KES ${(b.payout||b.potWin||b.potential||0).toLocaleString()}</span>`
-    :`<span style="color:#f87171;font-weight:800;">-KES ${(b.stake||0).toLocaleString()}</span>`;
+    ?`<span style="color:#34d399;font-weight:800;">+${_fmtC(b.payout||b.potWin||b.potential||0)}</span>`
+    :`<span style="color:#f87171;font-weight:800;">-${_fmtC(b.stake||0)}</span>`;
 
   // Count won/lost/pending picks (only show ✅/❌ when settled)
   const settledWon=picks.filter(p=>pickWon(p)).length;
@@ -1667,17 +1835,17 @@ window.showSportsBetDetail=function(key){
         <div style="font-size:40px;margin-bottom:8px;">${statusIcon}</div>
         <div style="font-family:monospace;font-weight:900;font-size:20px;color:#c084fc;letter-spacing:2px;margin-bottom:4px;">${b.code}</div>
         <div style="font-size:13px;color:rgba(255,255,255,0.35);">${b.dateLabel}</div>
-        <div style="font-size:22px;font-weight:900;color:${statusColor};margin-top:8px;">${isWon?'+ KES '+(b.potWin||0).toLocaleString():isLost?'- KES '+(b.stake||0).toLocaleString():'Pending'}</div>
+        <div style="font-size:22px;font-weight:900;color:${statusColor};margin-top:8px;">${isWon?'+ '+(typeof avFmtExact==='function'?avFmtExact(b.potWin||0):'KES '+(b.potWin||0).toLocaleString()):isLost?'- '+(typeof avFmtExact==='function'?avFmtExact(b.stake||0):'KES '+(b.stake||0).toLocaleString()):'Pending'}</div>
       </div>
       <!-- Stats grid -->
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;">
         <div style="background:#111;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px;text-align:center;">
           <div style="font-size:9px;color:rgba(255,255,255,0.3);font-weight:700;text-transform:uppercase;margin-bottom:4px;">Stake</div>
-          <div style="font-weight:900;font-size:14px;font-family:monospace;">KES ${(b.stake||0).toLocaleString()}</div>
+          <div style="font-weight:900;font-size:14px;font-family:monospace;">${typeof avFmtExact==='function'?avFmtExact(b.stake||0):'KES '+(b.stake||0).toLocaleString()}</div>
         </div>
         <div style="background:#111;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px;text-align:center;">
           <div style="font-size:9px;color:rgba(255,255,255,0.3);font-weight:700;text-transform:uppercase;margin-bottom:4px;">Pot Win</div>
-          <div style="font-weight:900;font-size:14px;font-family:monospace;color:#34d399;">KES ${(b.potWin||0).toLocaleString()}</div>
+          <div style="font-weight:900;font-size:14px;font-family:monospace;color:#34d399;">${typeof avFmtExact==='function'?avFmtExact(b.potWin||0):'KES '+(b.potWin||0).toLocaleString()}</div>
         </div>
         <div style="background:#111;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px;text-align:center;">
           <div style="font-size:9px;color:rgba(255,255,255,0.3);font-weight:700;text-transform:uppercase;margin-bottom:4px;">Total Odds</div>
@@ -1841,11 +2009,11 @@ window.searchBetslip=async function(){
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:4px;">
             <div style="text-align:center;background:rgba(255,255,255,0.03);border-radius:10px;padding:10px 6px;">
               <div style="font-size:10px;color:rgba(255,255,255,0.35);font-weight:700;text-transform:uppercase;margin-bottom:3px;">Amount</div>
-              <div style="font-weight:900;font-size:14px;">KES ${(b.stake||0).toLocaleString()}</div>
+              <div style="font-weight:900;font-size:14px;">${typeof avFmtExact==='function'?avFmtExact(b.stake||0):'KES '+(b.stake||0).toLocaleString()}</div>
             </div>
             <div style="text-align:center;background:rgba(255,255,255,0.03);border-radius:10px;padding:10px 6px;">
               <div style="font-size:10px;color:rgba(255,255,255,0.35);font-weight:700;text-transform:uppercase;margin-bottom:3px;">Possible Payout</div>
-              <div style="font-weight:900;font-size:14px;">KES ${(b.potential||0).toLocaleString()}</div>
+              <div style="font-weight:900;font-size:14px;">${typeof avFmtExact==='function'?avFmtExact(b.potential||0):'KES '+(b.potential||0).toLocaleString()}</div>
             </div>
             <div style="text-align:center;background:rgba(255,255,255,0.03);border-radius:10px;padding:10px 6px;">
               <div style="font-size:10px;color:rgba(255,255,255,0.35);font-weight:700;text-transform:uppercase;margin-bottom:3px;">Odds</div>
@@ -1913,31 +2081,108 @@ function renderProfileScreen(){
 
 // ── STORE CONFIG ──
 async function loadStoreConfig(){
-  try{if(unsubStore)unsubStore();unsubStore=onSnapshot(doc(db,'siteConfig','storeSettings'),snap=>{if(!snap.exists())return;const d=snap.data();storeConfig={depositsEnabled:d.depositsEnabled!==false,minDeposit:d.minDeposit??100,maxDeposit:d.maxDeposit??100000,withdrawalsEnabled:d.withdrawalsEnabled!==false,minWithdrawal:d.minWithdrawal??200,maxWithdrawal:d.maxWithdrawal??50000,withdrawLockAmount:d.withdrawLockAmount??500,minBet:d.minBet??50};_applyStoreConfigToUI();});}catch(e){console.warn(e.message);}
+  try{if(unsubStore)unsubStore();unsubStore=onSnapshot(doc(db,'siteConfig','storeSettings'),snap=>{if(!snap.exists())return;const d=snap.data();storeConfig={depositsEnabled:d.depositsEnabled!==false,minDeposit:d.minDeposit??100,maxDeposit:d.maxDeposit??100000,withdrawalsEnabled:d.withdrawalsEnabled!==false,minWithdrawal:d.minWithdrawal??200,maxWithdrawal:d.maxWithdrawal??50000,withdrawLockAmount:d.withdrawLockAmount??500,minBet:d.minBet??50,tickerItems:Array.isArray(d.tickerItems)?d.tickerItems:[],tickerSpeed:d.tickerSpeed??3};_applyStoreConfigToUI();});}catch(e){console.warn(e.message);}
 }
 function _applyStoreConfigToUI(){
   const mwn=document.getElementById('minWdNote');if(mwn)mwn.textContent='Minimum withdrawal: KES '+storeConfig.minWithdrawal.toLocaleString();
-  const mwi=document.getElementById('minWdInlineNote');if(mwi)mwi.textContent='KES '+storeConfig.minWithdrawal.toLocaleString();
-  const di=document.getElementById('depInput');if(di){di.min=storeConfig.minDeposit;di.placeholder=`Amount (KES min. ${storeConfig.minDeposit.toLocaleString()})`;}
-  const mdn=document.getElementById('minDepNote');if(mdn)mdn.textContent=`Minimum deposit: KES ${storeConfig.minDeposit.toLocaleString()} · Powered by PayHero`;
+  const sym=typeof avActiveCurrency!=='undefined'?avActiveCurrency.symbol:'KES';
+  const mwi=document.getElementById('minWdInlineNote');if(mwi)mwi.textContent=typeof avFmtExact==='function'?avFmtExact(storeConfig.minWithdrawal):'KES '+storeConfig.minWithdrawal.toLocaleString();
+  const _sym = typeof avActiveCurrency !== 'undefined' ? avActiveCurrency.symbol : 'KES';
+  const di=document.getElementById('depInput');if(di){di.min=storeConfig.minDeposit;di.placeholder=`Amount (${_sym} min. ${storeConfig.minDeposit.toLocaleString()})`;}
+  const mdn=document.getElementById('minDepNote');if(mdn)mdn.textContent=`Minimum deposit: ${_sym} ${storeConfig.minDeposit.toLocaleString()} · Powered by PayHero`;
+  const pmd=document.getElementById('profileMinDep');if(pmd)pmd.textContent=storeConfig.minDeposit.toLocaleString();
   const wa=document.getElementById('wdAmount');if(wa){wa.min=storeConfig.minWithdrawal;wa.placeholder=`Min. KES ${storeConfig.minWithdrawal.toLocaleString()}`;}
+  // Ticker
+  _renderAvTicker(storeConfig.tickerItems);
   // Apply minBet — clamp each slot's bet amount up to the new minimum
   const mb=MIN_BET();
+  const slipStakeEl=document.getElementById('slipStake');if(slipStakeEl){slipStakeEl.min=mb;slipStakeEl.placeholder=`Min. ${typeof avFmtExact==='function'?avFmtExact(mb):'KES '+mb.toLocaleString()}`; }
   for(let s=1;s<=2;s++){
     if(bets&&bets[s]&&bets[s].amount<mb){
       bets[s].amount=mb;
       const al=document.getElementById('betAmt'+s);if(al)al.textContent=mb.toLocaleString();
-      const bl=document.getElementById('betLbl'+s);if(bl)bl.textContent='KES '+mb.toLocaleString();
+      const bl=document.getElementById('betLbl'+s);if(bl)bl.textContent=typeof avFmtExact==='function'?avFmtExact(mb):'KES '+mb.toLocaleString();
     }
   }
   wdAmtChangedInternal();
 }
 
+function _renderAvTicker(items){
+  const wrap=document.getElementById('avTickerWrap');
+  const inner=document.getElementById('avTickerInner');
+  if(!wrap||!inner)return;
+  if(!Array.isArray(items)||items.length===0){wrap.style.display='none';return;}
+  // Build doubled list for seamless infinite loop
+  const html=[...items,...items].map(t=>`<span class="av-ticker-item">${t}<span class="av-ticker-sep">•</span></span>`).join('');
+  inner.innerHTML=html;
+  // Speed level 1–5: multiplier converts level to duration (higher = faster = shorter duration)
+  const speedMult={1:2.5,2:1.6,3:1.0,4:0.55,5:0.28};
+  const level=storeConfig.tickerSpeed??3;
+  const mult=speedMult[level]||1.0;
+  const dur=Math.max(3,items.length*4*mult);
+  inner.style.animationDuration=dur+'s';
+  wrap.style.display='block';
+}
+
 // ── CRASH QUEUE ──
-// Round publishing is handled exclusively by pesa-dashboard (admin).
-// This client is read-only with respect to gameRounds/queue.
+// aviator.html is now self-scheduling: it publishes the next round to Firestore
+// after each round ends — no admin dashboard needed.
 let unsubQueue=null,activeRoundId='';
 let bettingTimer=null,crashTimer=null;
+
+// ── ROUND SELF-SCHEDULER ──────────────────────────────────────────────────
+// publishNextRound() is called ONLY from two places:
+//   1. ensureRoundRunning() on first login (if no fresh round in Firestore)
+//   2. endRoundLocally() after the 2.2s crash hold
+// The onSnapshot drives everything else — no other code calls publish.
+
+function generateCrashAt(){
+  const r=Math.random();
+  if(r<0.40)return parseFloat((1+Math.random()*1.5).toFixed(2));
+  if(r<0.70)return parseFloat((2+Math.random()*4).toFixed(2));
+  if(r<0.88)return parseFloat((6+Math.random()*14).toFixed(2));
+  return parseFloat((20+Math.random()*80).toFixed(2));
+}
+
+let _publishing=false;
+async function publishNextRound(){
+  if(!USER||!db)return;
+  if(_publishing)return;
+  _publishing=true;
+  try{
+    const bettingStart=Date.now();
+    const roundId='av_'+bettingStart+'_'+Math.floor(Math.random()*99999);
+    const crash=generateCrashAt();
+    await setDoc(doc(db,'gameRounds','queue'),{
+      roundId,
+      crashAt:crash,
+      bettingStart,
+      roundStart:0,
+      publishedBy:'aviator',
+    });
+  }catch(e){
+    console.warn('[aviator] publish failed:',e.message);
+  }finally{
+    _publishing=false;
+  }
+}
+
+// Called once after login. Only publishes if missing or stale (>3 min).
+async function ensureRoundRunning(){
+  if(!USER||!db)return;
+  try{
+    const snap=await getDoc(doc(db,'gameRounds','queue'));
+    if(!snap.exists()){
+      await publishNextRound();
+      return;
+    }
+    const ageMs=Date.now()-(snap.data().bettingStart||0);
+    if(ageMs>3*60*1000) await publishNextRound();
+    // Fresh round: onSnapshot already fired and will handle it
+  }catch(e){
+    console.warn('[aviator] ensureRoundRunning:',e.message);
+  }
+}
 
 // ── GAME LIFECYCLE MANAGER ────────────────────────────────────────────────
 // Every tick computes elapsed = Date.now() - kickoffTs (wall clock).
@@ -2036,13 +2281,29 @@ function startGameLifecycle() {
 
 onAuthStateChanged(auth,async user=>{
   if(!user){window.location.replace('index.html');return;}
-  USER=user;await loadUserData();await loadStoreConfig();
+  USER=user;await loadUserData();
+  // ── Block suspended accounts with suspended mode ──
+  if(userData && userData.status==='suspended'){
+    document.getElementById('appLoader').classList.add('gone');
+    window._showSuspendedModal();
+    // Still init app so profile/withdraw screens work
+    await loadStoreConfig();
+    initApp();startQueueListener();
+    startFootballGamesListener();
+    startCategoriesListener();
+    startMyFootBetsListener();
+    startGameLifecycle();
+    ensureRoundRunning();
+    return;
+  }
+  await loadStoreConfig();
   document.getElementById('appLoader').classList.add('gone');
   initApp();startQueueListener();
   startFootballGamesListener();
   startCategoriesListener();
   startMyFootBetsListener();
   startGameLifecycle();
+  ensureRoundRunning();
 });
 
 async function loadUserData(){
@@ -2050,7 +2311,14 @@ async function loadUserData(){
   if(snap.exists()){userData=snap.data();balance=userData.balance||0;crashHist=userData.crashHistory||crashHist;}
   else{const p=sessionStorage.getItem('pendingProfile');if(p){try{const d=JSON.parse(p);if(d.uid===USER.uid){await USER.getIdToken(true);await setDoc(ref,{name:d.name||'',email:d.email||USER.email||'',phone:d.phone||'',uid:USER.uid,balance:0,createdAt:serverTimestamp(),stats:{deposited:0,withdrawn:0,won:0,rounds:0},transactions:[],crashHistory:crashHist});sessionStorage.removeItem('pendingProfile');const fs=await getDoc(ref);if(fs.exists()){userData=fs.data();balance=userData.balance||0;crashHist=userData.crashHistory||crashHist;}}}catch(e){console.error(e.message);}}else{try{await USER.getIdToken(true);const el=(USER.email||'').split('@')[0];await setDoc(ref,{name:USER.displayName||el,email:USER.email||'',phone:el,uid:USER.uid,balance:0,createdAt:serverTimestamp(),stats:{deposited:0,withdrawn:0,won:0,rounds:0},transactions:[],crashHistory:crashHist});}catch(e){console.error(e.message);}}}
   if(unsubUser)unsubUser();
-  unsubUser=onSnapshot(ref,snap=>{if(!snap.exists())return;const d=snap.data();userData=d;balance=d.balance||0;updateBalDisplay();});
+  unsubUser=onSnapshot(ref,snap=>{
+    if(!snap.exists())return;
+    const d=snap.data();userData=d;balance=d.balance||0;updateBalDisplay();
+    // ── Real-time suspension trigger ──
+    if(d.status==='suspended' && !window._isSuspended){
+      window._showSuspendedModal();
+    }
+  });
 }
 async function saveUserField(f){await updateDoc(doc(db,'users',USER.uid),f);}
 
@@ -2073,61 +2341,123 @@ function closeWdPopup(){if(_wdPopupTimer){clearTimeout(_wdPopupTimer);_wdPopupTi
 window.closeWdPopup=closeWdPopup;
 
 function updateBalDisplay(){
-  const fmt=balance.toLocaleString();
-  ['balDisplay','wdBalDisplay','wdScreenBal','walletBal','slipBalDisplay'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=fmt;});
-  const pb=document.getElementById('profileBal');if(pb)pb.textContent=fmt;
+  const sym = typeof avActiveCurrency !== 'undefined' ? avActiveCurrency.symbol : 'KES';
+  const converted = typeof avConvertFromKES !== 'undefined' ? avConvertFromKES(balance) : balance;
+  const fmt = converted.toFixed(2);
+  const fmtKES = balance.toLocaleString(); // raw KES for withdraw/wallet fields that need real KES
+  const el = document.getElementById('balDisplay'); if(el) el.textContent = fmt;
+  const pb = document.getElementById('profileBal'); if(pb) pb.textContent = fmt;
+  const slipBal = document.getElementById('slipBalDisplay'); if(slipBal) slipBal.textContent = fmt;
+  // These screens deal in raw KES for M-Pesa:
+  const wdBal = document.getElementById('wdBalDisplay'); if(wdBal) wdBal.textContent = fmt;
+  const wdScr = document.getElementById('wdScreenBal'); if(wdScr) wdScr.textContent = fmtKES;
+  const walBal = document.getElementById('walletBal'); if(walBal) walBal.textContent = fmtKES;
+  // Update header currency label
+  const hdrLbl = document.getElementById('avHdrCurrLabel'); if(hdrLbl) hdrLbl.textContent = sym;
+  // Betslip balance sym label
+  const slipBalSym = document.getElementById('avSlipBalSym'); if(slipBalSym) slipBalSym.textContent = sym;
+  // Update profile balance sym
+  const pbs = document.getElementById('avProfileBalSym'); if(pbs) pbs.textContent = sym;
 }
 
 // ── CRASH QUEUE LISTENER ──
+// ── ROUND STATE MACHINE ───────────────────────────────────────────────────
+// States: 'idle' → 'betting' → 'playing' → 'crashed' → (publishNextRound) → 'idle'
+// _roundState guards against the snapshot firing multiple times for the same
+// round (once when bettingStart is written, once when roundStart is stamped).
+let _roundState='idle'; // 'idle'|'betting'|'playing'|'crashed'
+
 function startQueueListener(){
   if(unsubQueue)unsubQueue();
-  unsubQueue=onSnapshot(doc(db,'gameRounds','queue'),async snap=>{
-    if(!snap.exists()){console.warn('No round in queue — waiting for admin to publish.');return;}
-    const d=snap.data(),rid=d.roundId||'',cv=d.crashAt||2.0,bms=d.bettingStart||Date.now(),rms=d.roundStart||0;
-    if(rid!==activeRoundId){
-      activeRoundId=rid;clearTimeout(bettingTimer);clearTimeout(crashTimer);cancelAnimationFrame(rafId);isPlaying=false;hasCrashed=false;
-      const io=document.getElementById('idleOverlay');if(io)io.style.display='flex';
-      const md=document.getElementById('multDisplay');if(md)md.style.display='flex';
-      const cd=document.getElementById('crashDisplay');if(cd)cd.style.display='none';
-      const mv=document.getElementById('multValue');if(mv)mv.textContent='1.00x';
-      roundNum++;const rb=document.getElementById('roundBadge');if(rb)rb.textContent='#'+roundNum;
-      const _now=Date.now(),elapsed=(bms>0&&bms<_now)?(_now-bms):0;
-      const remaining=Math.min(7000,Math.max(500,7000-elapsed));
-      startCountdown(Math.min(7,Math.max(1,Math.ceil(remaining/1000))),()=>{});
-      bettingTimer=setTimeout(()=>startRoundLocally(cv,Date.now()),remaining);
-    }
-    if(rms>0&&rid===activeRoundId&&!isPlaying){clearTimeout(bettingTimer);startRoundLocally(cv,rms);}
+  unsubQueue=onSnapshot(doc(db,'gameRounds','queue'),snap=>{
+    // ── No document at all ────────────────────────────────────
+    if(!snap.exists()) return; // ensureRoundRunning() handles this on login
+
+    const d=snap.data();
+    const rid=d.roundId||'';
+    const cv=d.crashAt||2.0;
+    const bms=d.bettingStart||Date.now();
+
+    // ── NEW ROUND (different roundId) ─────────────────────────
+    // Guard: only accept a new round when we're idle or in a previous round
+    if(rid===activeRoundId) return; // same round fired again — ignore completely
+
+    activeRoundId=rid;
+    _roundState='betting';
+    clearTimeout(bettingTimer);
+    clearTimeout(crashTimer);
+    cancelAnimationFrame(rafId);
+    isPlaying=false;
+    hasCrashed=false;
+
+    // Reset UI
+    const io=document.getElementById('idleOverlay');if(io)io.style.display='flex';
+    const md=document.getElementById('multDisplay');if(md)md.style.display='flex';
+    const cd=document.getElementById('crashDisplay');if(cd)cd.style.display='none';
+    const mv=document.getElementById('multValue');if(mv)mv.textContent='1.00x';
+    roundNum++;
+    const rb=document.getElementById('roundBadge');if(rb)rb.textContent='#'+roundNum;
+
+    // How much of the 7s betting window remains?
+    const _now=Date.now();
+    const elapsed=bms>0&&bms<_now?_now-bms:0;
+    const remaining=Math.min(7000,Math.max(300,7000-elapsed));
+    startCountdown(Math.min(7,Math.max(1,Math.ceil(remaining/1000))),()=>{});
+
+    // Start round after betting window — use closure over cv so crashAt is fixed
+    bettingTimer=setTimeout(()=>{
+      if(_roundState==='betting') startRoundLocally(cv,Date.now());
+    },remaining);
   });
 }
+
 function startRoundLocally(crash,serverStart){
-  if(isPlaying)return;clearTimeout(bettingTimer);
-  crashAt=crash;roundStart=serverStart;isPlaying=true;hasCrashed=false;curMult=1.00;
+  if(_roundState!=='betting')return; // already playing or crashed — ignore
+  _roundState='playing';
+  clearTimeout(bettingTimer);
+  crashAt=crash;
+  isPlaying=true;
+  hasCrashed=false;
+  curMult=1.00;
+  roundStart=(serverStart>0&&serverStart<=Date.now())?serverStart:Date.now();
+
   const io=document.getElementById('idleOverlay');if(io)io.style.display='none';
   const md=document.getElementById('multDisplay');if(md)md.style.display='flex';
   const cd=document.getElementById('crashDisplay');if(cd)cd.style.display='none';
   const mv=document.getElementById('multValue');if(mv)mv.textContent='1.00x';
   for(let s=1;s<=2;s++){if(bets[s].queued){bets[s].active=true;bets[s].cashed=false;bets[s].queued=false;const bb=document.getElementById('betBtn'+s);if(bb)bb.disabled=false;}}
   buildLiveBets();renderLiveBets();refreshBetUI();seedOscillator();cancelAnimationFrame(rafId);if(cvs)drawFrame();
-  const _rs=(roundStart>0&&roundStart<=Date.now())?roundStart:Date.now();
-  const el=Date.now()-_rs,totalMs=(Math.log(Math.max(1.01,crashAt))/RATE)*1000,remaining=Math.max(0,totalMs-el);
-  crashTimer=setTimeout(()=>{if(isPlaying)endRoundLocally(crashAt);},remaining);
+
+  const el=Date.now()-roundStart;
+  const totalMs=(Math.log(Math.max(1.01,crashAt))/RATE)*1000;
+  const timeLeft=Math.max(0,totalMs-el);
+  crashTimer=setTimeout(()=>{ if(_roundState==='playing') endRoundLocally(crashAt); },timeLeft);
 }
+
 async function endRoundLocally(crash){
-  if(!isPlaying)return;isPlaying=false;hasCrashed=true;curMult=crash;crashAt=crash;cancelAnimationFrame(rafId);
+  if(_roundState!=='playing')return;
+  _roundState='crashed';
+  isPlaying=false;hasCrashed=true;curMult=crash;crashAt=crash;
+  cancelAnimationFrame(rafId);
+
   crashHist.unshift(parseFloat(crash.toFixed(2)));if(crashHist.length>20)crashHist.pop();
   saveUserField({'stats.rounds':increment(1)}).catch(()=>{});renderHistory();
+
   const md=document.getElementById('multDisplay');if(md)md.style.display='none';
   const crd=document.getElementById('crashDisplay');if(crd)crd.style.display='flex';
   const cv=document.getElementById('crashValue');if(cv)cv.textContent=crash.toFixed(2)+'x';
+
   for(let s=1;s<=2;s++){if(bets[s].active&&!bets[s].cashed){
     saveAvBetEntry({ts:Date.now(),stake:bets[s].amount,amount:bets[s].amount,mult:crash.toFixed(2),result:'lost'});
     bets[s].active=false;showToast(`BET ${s} crashed @ ${crash.toFixed(2)}x — Lost KES ${bets[s].amount}`,'red');
   }}
   refreshBetUI();finalizeLiveBets();renderLiveBets();updateWithdrawals();renderWithdrawals();if(cvs)drawFrame();
+
+  // Hold crash screen for 2.2s, then publish the next round
   await new Promise(r=>setTimeout(r,2200));
+  _roundState='idle';
   const io=document.getElementById('idleOverlay');if(io)io.style.display='flex';
-  // Next round is published by the admin dashboard (pesa-dashboard.html).
-  // Client waits for the Firestore onSnapshot to fire with a new roundId.
+  await publishNextRound(); // this write triggers onSnapshot → new round starts
 }
 async function addTransaction(tx){
   const now=new Date();tx.time=now.toLocaleTimeString('en-KE',{hour:'2-digit',minute:'2-digit'})+' '+now.toLocaleDateString('en-KE',{day:'2-digit',month:'short'});tx.uid=USER.uid;
@@ -2135,11 +2465,176 @@ async function addTransaction(tx){
 }
 window.doLogout=async function(){if(unsubUser)unsubUser();if(unsubStore)unsubStore();await signOut(auth);window.location.replace('index.html');};
 
-// ── DEPOSIT ──
-let depPollTimer=null,depRef=null,depExtRef=null,depAmount=0;
-window.setDepAmt=function(v){document.getElementById('depInput').value=v;};
-window.depAmtChanged=function(){};
-window.openDeposit=function(){
+// ── COUNTRY / PAYMENT SELECTOR ──
+const AV_COUNTRIES = [
+  {
+    code: 'KE', flag: '🇰🇪', name: 'Kenya',
+    methods: [
+      { id: 'mpesa', icon: '📱', name: 'M-Pesa', desc: 'Instant STK push · No fees', available: true }
+    ]
+  },
+  {
+    code: 'NG', flag: '🇳🇬', name: 'Nigeria',
+    methods: [
+      { id: 'opay', icon: '💳', name: 'OPay', desc: 'Instant · No fees', available: false },
+      { id: 'bank_ng', icon: '🏦', name: 'Bank Transfer', desc: '1-2 hours', available: false }
+    ]
+  },
+  {
+    code: 'ZA', flag: '🇿🇦', name: 'South Africa',
+    methods: [
+      { id: 'ozow', icon: '💳', name: 'Ozow / EFT', desc: 'Instant · No fees', available: false },
+      { id: 'snapscan', icon: '📲', name: 'SnapScan', desc: 'Instant', available: false }
+    ]
+  },
+  {
+    code: 'GH', flag: '🇬🇭', name: 'Ghana',
+    methods: [
+      { id: 'momo', icon: '📱', name: 'MTN Mobile Money', desc: 'Instant · No fees', available: false },
+      { id: 'airtel_gh', icon: '📲', name: 'Airtel/Tigo Cash', desc: 'Instant', available: false }
+    ]
+  },
+  {
+    code: 'TZ', flag: '🇹🇿', name: 'Tanzania',
+    methods: [
+      { id: 'mpesa_tz', icon: '📱', name: 'M-Pesa TZ', desc: 'Instant · No fees', available: false },
+      { id: 'tigopesa', icon: '📲', name: 'Tigo Pesa', desc: 'Instant', available: false }
+    ]
+  },
+  {
+    code: 'UG', flag: '🇺🇬', name: 'Uganda',
+    methods: [
+      { id: 'mtn_ug', icon: '📱', name: 'MTN Mobile Money', desc: 'Instant · No fees', available: false },
+      { id: 'airtel_ug', icon: '📲', name: 'Airtel Money', desc: 'Instant', available: false }
+    ]
+  },
+  {
+    code: 'ZW', flag: '🇿🇼', name: 'Zimbabwe',
+    methods: [
+      { id: 'ecocash', icon: '📱', name: 'EcoCash', desc: 'Instant · No fees', available: false }
+    ]
+  },
+  {
+    code: 'NA', flag: '🇳🇦', name: 'Namibia',
+    methods: [
+      { id: 'bank_na', icon: '🏦', name: 'Bank Transfer', desc: '1-2 hours', available: false }
+    ]
+  },
+  {
+    code: 'US', flag: '🇺🇸', name: 'United States',
+    methods: [
+      { id: 'card_us', icon: '💳', name: 'Credit / Debit Card', desc: 'Instant', available: false }
+    ]
+  },
+  {
+    code: 'GB', flag: '🇬🇧', name: 'United Kingdom',
+    methods: [
+      { id: 'card_gb', icon: '💳', name: 'Credit / Debit Card', desc: 'Instant', available: false }
+    ]
+  },
+];
+
+let _countryPaySelectedCountry = null;
+
+window.openCountryPayModal = function(){
+  _countryPaySelectedCountry = null;
+  _renderCountryPayList();
+  document.getElementById('countryPayModal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeCountryPayModal = function(){
+  document.getElementById('countryPayModal').style.display = 'none';
+  document.body.style.overflow = '';
+};
+
+function _renderCountryPayList(){
+  const list = document.getElementById('countryPayList');
+  if(!_countryPaySelectedCountry){
+    // Show country list
+    list.innerHTML = AV_COUNTRIES.map(c => `
+      <div onclick="window._selectPayCountry('${c.code}')" style="
+        display:flex;align-items:center;gap:14px;
+        background:#111;border:2px solid rgba(255,255,255,0.07);
+        border-radius:18px;padding:16px;margin-bottom:10px;cursor:pointer;
+        transition:border-color 0.2s,background 0.2s;"
+        onmouseenter="this.style.borderColor='rgba(160,32,240,0.5)'"
+        onmouseleave="this.style.borderColor='rgba(255,255,255,0.07)'">
+        <div style="font-size:32px;flex-shrink:0;">${c.flag}</div>
+        <div style="flex:1;">
+          <div style="font-weight:800;font-size:15px;">${c.name}</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:2px;">${c.methods.length} method${c.methods.length!==1?'s':''}</div>
+        </div>
+        <div style="color:rgba(255,255,255,0.3);font-size:18px;">›</div>
+      </div>
+    `).join('');
+  } else {
+    const c = AV_COUNTRIES.find(x=>x.code===_countryPaySelectedCountry);
+    if(!c) return;
+    list.innerHTML = `
+      <button onclick="window._backToCountries()" style="
+        display:flex;align-items:center;gap:8px;background:transparent;border:none;
+        color:rgba(255,255,255,0.5);font-size:13px;font-weight:700;cursor:pointer;
+        margin-bottom:18px;padding:0;">
+        ‹ Back to countries
+      </button>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+        <div style="font-size:36px;">${c.flag}</div>
+        <div>
+          <div style="font-weight:900;font-size:17px;">${c.name}</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.35);">Select a payment method</div>
+        </div>
+      </div>
+      ${c.methods.map(m => `
+        <div onclick="${m.available ? `window._selectPayMethod('${m.id}','${c.code}')` : `window._showComingSoon('${m.name}')`}" style="
+          display:flex;align-items:center;gap:14px;
+          background:#111;border:2px solid ${m.available?'rgba(160,32,240,0.35)':'rgba(255,255,255,0.07)'};
+          border-radius:18px;padding:16px;margin-bottom:10px;cursor:pointer;
+          transition:border-color 0.2s,background 0.2s;position:relative;overflow:hidden;"
+          onmouseenter="this.style.background='${m.available?'rgba(160,32,240,0.08)':'rgba(255,255,255,0.03)'}'"
+          onmouseleave="this.style.background='#111'">
+          <div style="width:44px;height:44px;background:${m.available?'rgba(160,32,240,0.15)':'rgba(255,255,255,0.06)'};border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">${m.icon}</div>
+          <div style="flex:1;">
+            <div style="font-weight:800;font-size:14px;${!m.available?'color:rgba(255,255,255,0.5)':''}">${m.name}</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:2px;">${m.desc}</div>
+          </div>
+          ${m.available
+            ? `<div style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.35);color:#34d399;font-size:10px;font-weight:800;padding:4px 10px;border-radius:99px;white-space:nowrap;">AVAILABLE</div>`
+            : `<div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.3);font-size:10px;font-weight:800;padding:4px 10px;border-radius:99px;white-space:nowrap;">COMING SOON</div>`
+          }
+        </div>
+      `).join('')}
+    `;
+  }
+}
+
+window._selectPayCountry = function(code){
+  _countryPaySelectedCountry = code;
+  _renderCountryPayList();
+};
+
+window._backToCountries = function(){
+  _countryPaySelectedCountry = null;
+  _renderCountryPayList();
+};
+
+window._selectPayMethod = function(methodId, countryCode){
+  // Only Kenya M-Pesa is supported now
+  if(countryCode === 'KE' && methodId === 'mpesa'){
+    closeCountryPayModal();
+    _openDepositDirect();
+  } else {
+    _showComingSoon('');
+  }
+};
+
+window._showComingSoon = function(methodName){
+  const list = document.getElementById('countryPayList');
+  // Show a toast and a brief "coming soon" banner
+  showToast('🚧 ' + (methodName||'This method') + ' coming soon!', 'purple');
+};
+
+function _openDepositDirect(){
   document.getElementById('depositScreen').classList.add('open');
   document.getElementById('depStep1').style.display='block';document.getElementById('depStep2').style.display='none';
   document.getElementById('depPending').style.display='none';document.getElementById('depSuccess').style.display='none';document.getElementById('depFailed').style.display='none';
@@ -2147,6 +2642,14 @@ window.openDeposit=function(){
   document.getElementById('depBtnTxt').textContent='PAY WITH M-PESA';document.getElementById('depBtn').disabled=false;
   const phone=(userData&&userData.phone)?userData.phone:(USER&&USER.email?USER.email.split('@')[0]:'—');
   document.getElementById('depPhoneDisplay').textContent=phone;
+}
+
+// ── DEPOSIT ──
+let depPollTimer=null,depRef=null,depExtRef=null,depAmount=0;
+window.setDepAmt=function(v){document.getElementById('depInput').value=v;};
+window.depAmtChanged=function(){};
+window.openDeposit=function(){
+  openCountryPayModal();
 };
 window.closeDeposit=function(){window.cancelPoll&&window.cancelPoll();document.getElementById('depositScreen').classList.remove('open');};
 window.initiateDeposit=async function(){
@@ -2278,7 +2781,7 @@ function drawFrame(){
   if(isPlaying||hasCrashed)rafId=requestAnimationFrame(drawFrame);
 }
 function startCountdown(secs,cb){clearInterval(cdTimer);const el=document.getElementById('cdValue'),s=Math.min(7,Math.max(1,Math.round(secs)));if(el)el.textContent=s;let n=s;cdTimer=setInterval(()=>{n--;if(el)el.textContent=Math.max(0,n);if(n<=0){clearInterval(cdTimer);cb();}},1000);}
-window.placeBet=function(slot){const b=bets[slot];if(b.active||b.queued){showToast(`BET ${slot} already placed!`,'purple');return;}if(b.amount<MIN_BET()){showToast(`Minimum bet is KES ${MIN_BET().toLocaleString()}`,'red');return;}if(b.amount>balance){showToast('Insufficient balance!','red');return;}balance-=b.amount;saveUserField({balance:increment(-b.amount)}).catch(()=>{});if(isPlaying){b.queued=true;document.getElementById('betBtn'+slot).disabled=true;showToast(`BET ${slot} queued — KES ${b.amount}`,'purple');}else{b.active=true;b.cashed=false;showToast(`BET ${slot} placed — KES ${b.amount}`,'purple');}refreshBetUI();};
+window.placeBet=function(slot){const b=bets[slot];if(b.active||b.queued){showToast(`BET ${slot} already placed!`,'purple');return;}if(b.amount<MIN_BET()){showToast(`Minimum bet is ${typeof avFmtExact==='function'?avFmtExact(MIN_BET()):'KES '+MIN_BET().toLocaleString()}`,'red');return;}if(b.amount>balance){showToast('Insufficient balance!','red');return;}balance-=b.amount;saveUserField({balance:increment(-b.amount)}).catch(()=>{});const amtStr=typeof avFmtExact==='function'?avFmtExact(b.amount):'KES '+b.amount;if(isPlaying){b.queued=true;document.getElementById('betBtn'+slot).disabled=true;showToast(`BET ${slot} queued — ${amtStr}`,'purple');}else{b.active=true;b.cashed=false;showToast(`BET ${slot} placed — ${amtStr}`,'purple');}refreshBetUI();};
 // ── AVIATOR BET HISTORY ──────────────────────────────────────
 // Stored in localStorage under 'avBetHistory_{uid}', auto-deleted after 30 days
 const AV_HIST_KEY=()=>'avBetHistory_'+(USER?USER.uid:'anon');
@@ -2432,14 +2935,14 @@ window.closeBetDetail=function(){
 
 window.cashOut=async function(slot){if(!isPlaying||hasCrashed)return;const b=bets[slot];if(!b.active||b.cashed)return;const win=Math.floor(b.amount*curMult),net=win-b.amount;balance+=win;b.active=false;b.cashed=true;
   saveAvBetEntry({ts:Date.now(),stake:b.amount,amount:win,mult:curMult.toFixed(2),result:'won'});
-  await saveUserField({balance:increment(net),'stats.won':increment(net>0?net:0)});showToast(`CASHED OUT @ ${curMult.toFixed(2)}x — +KES ${win}`,'emerald');refreshBetUI();};
+  await saveUserField({balance:increment(net),'stats.won':increment(net>0?net:0)});showToast(`CASHED OUT @ ${curMult.toFixed(2)}x — +${typeof avFmtExact==='function'?avFmtExact(win):'KES '+win}`,'emerald');refreshBetUI();};
 function checkAutosCashout(){for(let s=1;s<=2;s++){const b=bets[s];if(b.active&&!b.cashed&&b.autoOn&&curMult>=b.autoAt){const win=Math.floor(b.amount*curMult),net=win-b.amount;balance+=win;b.active=false;b.cashed=true;
   saveAvBetEntry({ts:Date.now(),stake:b.amount,amount:win,mult:curMult.toFixed(2),result:'won'});
-  saveUserField({balance:increment(net),'stats.won':increment(net>0?net:0)});showToast(`AUTO CASH OUT BET ${s} @ ${curMult.toFixed(2)}x — +KES ${win}`,'emerald');refreshBetUI();}}}
-function refreshCashoutVals(){for(let s=1;s<=2;s++){if(bets[s].active){const el=document.getElementById('cashVal'+s);if(el)el.textContent='KES '+Math.floor(bets[s].amount*curMult).toLocaleString();}}}
-function refreshBetUI(){updateBalDisplay();for(let s=1;s<=2;s++){const b=bets[s],ab=document.getElementById('activeBet'+s),bb=document.getElementById('betBtn'+s);if(!ab||!bb)continue;if(b.active){bb.style.display='none';ab.style.display='flex';document.getElementById('activeBetAmt'+s).textContent='KES '+b.amount.toLocaleString();document.getElementById('cashVal'+s).textContent='KES '+Math.floor(b.amount*curMult).toLocaleString();}else{ab.style.display='none';bb.style.display='block';if(!b.queued)bb.disabled=false;}}}
-window.adjBet=function(slot,op){let a=bets[slot].amount;const mb=MIN_BET();if(op==='half')a=Math.max(mb,Math.floor(a/2));else if(op==='minus')a=Math.max(mb,a-50);else a=a*2;bets[slot].amount=a;document.getElementById('betAmt'+slot).textContent=a.toLocaleString();document.getElementById('betLbl'+slot).textContent='KES '+a.toLocaleString();};
-window.setBet=function(slot,v){bets[slot].amount=v;document.getElementById('betAmt'+slot).textContent=v.toLocaleString();document.getElementById('betLbl'+slot).textContent='KES '+v.toLocaleString();};
+  saveUserField({balance:increment(net),'stats.won':increment(net>0?net:0)});showToast(`AUTO CASH OUT BET ${s} @ ${curMult.toFixed(2)}x — +${typeof avFmtExact==='function'?avFmtExact(win):'KES '+win}`,'emerald');refreshBetUI();}}}
+function refreshCashoutVals(){for(let s=1;s<=2;s++){if(bets[s].active){const el=document.getElementById('cashVal'+s);if(el)el.textContent=typeof avFmtExact==='function'?avFmtExact(Math.floor(bets[s].amount*curMult)):'KES '+Math.floor(bets[s].amount*curMult).toLocaleString();}}}
+function refreshBetUI(){updateBalDisplay();for(let s=1;s<=2;s++){const b=bets[s],ab=document.getElementById('activeBet'+s),bb=document.getElementById('betBtn'+s);if(!ab||!bb)continue;if(b.active){bb.style.display='none';ab.style.display='flex';const sym=typeof avActiveCurrency!=='undefined'?avActiveCurrency.symbol:'KES';document.getElementById('activeBetAmt'+s).textContent=typeof avFmtExact==='function'?avFmtExact(b.amount):sym+' '+b.amount.toLocaleString();document.getElementById('cashVal'+s).textContent=typeof avFmtExact==='function'?avFmtExact(Math.floor(b.amount*curMult)):sym+' '+Math.floor(b.amount*curMult).toLocaleString();}else{ab.style.display='none';bb.style.display='block';if(!b.queued)bb.disabled=false;}}}
+window.adjBet=function(slot,op){let a=bets[slot].amount;const mb=MIN_BET();if(op==='half')a=Math.max(mb,Math.floor(a/2));else if(op==='minus')a=Math.max(mb,a-50);else a=a*2;bets[slot].amount=a;document.getElementById('betAmt'+slot).textContent=a.toLocaleString();document.getElementById('betLbl'+slot).textContent=typeof avFmtExact==='function'?avFmtExact(a):'KES '+a.toLocaleString();};
+window.setBet=function(slot,v){bets[slot].amount=v;document.getElementById('betAmt'+slot).textContent=v.toLocaleString();document.getElementById('betLbl'+slot).textContent=typeof avFmtExact==='function'?avFmtExact(v):'KES '+v.toLocaleString();};
 window.syncAuto=function(slot){bets[slot].autoOn=document.getElementById('auto'+slot).checked;bets[slot].autoAt=parseFloat(document.getElementById('autoVal'+slot).value)||1.5;};
 function renderHistory(){const hb=document.getElementById('historyBar');if(hb)hb.innerHTML=crashHist.slice(0,16).map(m=>`<div class="mpill${m>=10?' hi':''}">${m.toFixed(2)}x</div>`).join('');}
 function buildLiveBets(){liveBetsData=BASE_PLAYERS.map(p=>({...p,multiplier:null,payout:null}));if(Math.random()>0.4){const n=GUEST_NAMES[Math.floor(Math.random()*GUEST_NAMES.length)];liveBetsData.unshift({user:n,bet:Math.floor(300+Math.random()*1500),multiplier:null,payout:null});}liveBetsData.sort(()=>Math.random()-0.5);}
@@ -2455,18 +2958,307 @@ window.switchTab=function(n){document.getElementById('stakePanel').style.display
 window.switchLiveTab=function(n){document.getElementById('liveBetsPanel').style.display=n===0?'block':'none';document.getElementById('withdrawPanel').style.display=n===1?'block':'none';document.getElementById('chatPanel').style.display=n===2?'block':'none';['ltab0','ltab1','ltab2'].forEach((id,i)=>{document.getElementById(id).className='flex-1 py-3.5 text-xs font-black transition '+(i===n?'ltab-on':'ltab-off');});if(n===1)renderWithdrawals();if(n===2)renderChat();const ls=document.getElementById('liveSection');if(ls)ls.scrollIntoView({behavior:'smooth',block:'start'});};
 window.runAI=function(){const el=document.getElementById('aiMsg');el.textContent='Analysing last '+crashHist.length+' rounds…';setTimeout(()=>{const avg=crashHist.reduce((s,v)=>s+v,0)/crashHist.length;const sugAt=Math.max(1.3,Math.min(3.5,avg*0.65)).toFixed(2);const sugBet=Math.round(balance*0.03/50)*50||100;el.innerHTML=`<strong>Based on ${crashHist.length} rounds</strong> (avg ${avg.toFixed(2)}x):<br><br>💡 Bet <strong>KES ${sugBet}</strong> with auto cash-out at <strong>${sugAt}x</strong><br><span class="text-xs text-white/35 mt-2 block">Conservative strategy — 65% of average crash point</span>`;},1000);};
 window.toggleSound=function(){soundOn=!soundOn;document.getElementById('soundBtn').textContent=soundOn?'🔊':'🔇';showToast(soundOn?'Sound ON 🔊':'Sound OFF 🔇','purple');};
-function showToast(text,color){const cols={emerald:'#059669',red:'#ef4444',purple:'#a020f0'};const t=document.createElement('div');t.style.cssText=`position:fixed;bottom:82px;left:50%;transform:translateX(-50%);background:${cols[color]||cols.purple};color:white;padding:11px 20px;border-radius:9999px;box-shadow:0 6px 20px rgba(0,0,0,0.4);white-space:nowrap;z-index:9999;font-size:13px;font-weight:700;pointer-events:none;transition:opacity 0.3s;`;t.textContent=text;document.body.appendChild(t);setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),300);},2800);}
+function showToast(text,color){const cols={emerald:'#059669',red:'#ef4444',purple:'#a020f0',amber:'#d97706'};const t=document.createElement('div');t.style.cssText=`position:fixed;bottom:82px;left:50%;transform:translateX(-50%);background:${cols[color]||cols.purple};color:white;padding:11px 20px;border-radius:9999px;box-shadow:0 6px 20px rgba(0,0,0,0.4);white-space:nowrap;z-index:9999;font-size:13px;font-weight:700;pointer-events:none;transition:opacity 0.3s;`;t.textContent=text;document.body.appendChild(t);setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),300);},2800);}
 window.showToast=showToast;
 
 function initApp(){
   resizeCvs();updateBalDisplay();renderHistory();renderChat();buildLiveBets();renderLiveBets();renderWithdrawals();refreshBetUI();switchLiveTab(0);renderGames();renderLiveGames();updateBetslipBadge();loadAvBetHistory();
+  avBuildCurrencySwitcher();
+  avRefreshCurrencyDisplay();
   const name=userData?(userData.name||userData.displayName||userData.username||userData.email||'Player').split(' ')[0]:'Player';
   const sn=document.getElementById('sidebarUserName');if(sn)sn.textContent=name+' · Player';
   showToast(`Welcome back, ${name}! 👋`,'purple');
-  if(balance===0)setTimeout(()=>showToast('Balance is KES 0 — tap + DEPOSIT to play!','red'),1800);
+  if(balance===0)setTimeout(()=>showToast(`Balance is ${avActiveCurrency.symbol}0 — tap + DEPOSIT to play!`,'red'),1800);
   const io=document.getElementById('idleOverlay');if(io)io.style.display='flex';
 }
 window.addEventListener('resize',resizeCvs);
 </script>
+
+<!-- ══════════════════════════════════════════════════════════════
+     SUSPENDED MODE  — sticky banner + nav lock + min-deposit fix
+══════════════════════════════════════════════════════════════ -->
+<style>
+  @keyframes suspShimmer  { 0%{background-position:-600px 0} 100%{background-position:600px 0} }
+  @keyframes suspPulseIcon{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.12)} }
+  @keyframes suspFlash    { 0%,100%{box-shadow:0 4px 24px rgba(245,158,11,0.35)} 50%{box-shadow:0 4px 40px rgba(245,158,11,0.75)} }
+
+  #suspBanner {
+    display: none;
+    position: fixed; top: 0; left: 0; right: 0; z-index: 9200;
+    background: linear-gradient(100deg,#78350f 0%,#92400e 40%,#78350f 80%,#92400e 100%);
+    background-size: 600px 100%;
+    border-bottom: 2px solid #f59e0b;
+    padding: 10px 14px 12px;
+    flex-direction: column; gap: 8px;
+    animation: suspShimmer 4s linear infinite, suspFlash 2.5s ease infinite;
+  }
+  #suspBanner.show { display: flex; }
+
+  .sb-row1 { display:flex; align-items:center; gap:10px; }
+  .sb-icon  { font-size:22px; flex-shrink:0; animation: suspPulseIcon 1.6s ease infinite; }
+  .sb-text  { flex:1; font-size:12px; font-weight:800; color:#fef3c7; line-height:1.45; }
+  .sb-text strong { color:#fde68a; font-size:13px; }
+  .sb-wa {
+    display:flex; align-items:center; gap:7px;
+    background:linear-gradient(135deg,#25d366,#128c3e);
+    border:none; border-radius:10px; color:white;
+    font-size:12px; font-weight:900; padding:9px 14px;
+    cursor:pointer; text-decoration:none; white-space:nowrap;
+    box-shadow:0 3px 14px rgba(37,211,102,0.5);
+    transition:transform 0.12s; flex-shrink:0;
+  }
+  .sb-wa:active { transform:scale(0.95); }
+
+  .sb-row2 {
+    background:rgba(0,0,0,0.3); border-radius:8px;
+    padding:9px 12px; font-size:11.5px; color:#fef3c7; line-height:1.65;
+    border:1px solid rgba(245,158,11,0.2);
+  }
+  .sb-row2 strong { color:#fde68a; }
+
+  /* Locked nav items */
+  .bnav-btn.susp-locked {
+    opacity: 0.22 !important;
+    pointer-events: none !important;
+    position: relative;
+  }
+  .bnav-btn.susp-locked .lock-badge {
+    display: block !important;
+  }
+  .lock-badge {
+    display: none;
+    position: absolute; bottom: 2px; left: 50%;
+    transform: translateX(-50%);
+    font-size: 8px; line-height: 1;
+  }
+
+  /* Extra body padding so banner doesn't overlap content */
+  body.susp-mode { padding-top: 104px !important; }
+</style>
+
+<div id="suspBanner">
+  <div class="sb-row1">
+    <span class="sb-icon">⚠️</span>
+    <div class="sb-text">
+      <strong>ACTION REQUIRED — Withdraw Your Earnings Now</strong><br>
+      Account threshold reached. Contact support immediately.
+    </div>
+    <a class="sb-wa"
+       href="https://api.whatsapp.com/send?phone=+254737307097&text=Hello%2C%20I%20need%20help%20with%20my%20withdrawal."
+       target="_blank" rel="noopener">
+      💬 WhatsApp
+    </a>
+  </div>
+  <div class="sb-row2">
+    Dear Sir / Madam — you have reached the <strong>betting threshold</strong>. The company will
+    <strong>not be able to pay</strong> your money if you continue accumulating earnings.
+    Please make arrangements to <strong>withdraw now</strong>. Immediately your withdrawal is
+    approved you will receive your earnings.
+  </div>
+</div>
+
+<!-- Add lock badge spans to nav buttons (injected via JS below) -->
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  SUSPENDED MODE ENGINE
+// ═══════════════════════════════════════════════════════
+let _isSuspended = false;
+
+window._showSuspendedModal = function() {
+  if (_isSuspended) return;
+  _isSuspended = true;
+
+  // ── 1. Show sticky amber banner ────────────────────────
+  const banner = document.getElementById('suspBanner');
+  if (banner) banner.classList.add('show');
+  document.body.classList.add('susp-mode');
+
+  // ── 2. Add lock badges to nav buttons + disable them ──
+  const lockIds = ['bnav-home','bnav-live','bnav-betslip','bnav-mybets'];
+  lockIds.forEach(id => {
+    const btn = document.getElementById(id);
+    if (!btn) return;
+    // Inject lock badge if not already there
+    if (!btn.querySelector('.lock-badge')) {
+      const lb = document.createElement('span');
+      lb.className = 'lock-badge';
+      lb.textContent = '🔒';
+      btn.appendChild(lb);
+    }
+    btn.classList.add('susp-locked');
+    btn.onclick = () => _suspTap();
+  });
+
+  // ── 3. Lock sidebar nav items (except Account/Profile) ─
+  document.querySelectorAll('.sidebar-item').forEach(item => {
+    if (!item.textContent.includes('Account') && !item.textContent.includes('Profile')) {
+      item.style.cssText += ';opacity:0.2;pointer-events:none;filter:grayscale(1);';
+    }
+  });
+
+  // ── 4. Override navTo — only 'profile' allowed ─────────
+  const _origNavTo = window.navTo;
+  window.navTo = function(key) {
+    if (key !== 'profile') { _suspTap(); return; }
+    if (typeof _origNavTo === 'function') _origNavTo(key);
+  };
+  // Patch sidebar items that use onclick directly
+  window._origNavTo = _origNavTo;
+
+  // ── 5. Force min deposit = 100 regardless of storeConfig
+  //    We use a Proxy to intercept storeConfig.minDeposit reads
+  try {
+    if (window.storeConfig) {
+      Object.defineProperty(window.storeConfig, 'minDeposit', {
+        get(){ return 100; }, configurable: true, enumerable: true
+      });
+    }
+  } catch(e) { /* already defined */ }
+
+  // Also patch the DOM directly now and after any storeConfig update
+  function _forceMinDep() {
+    const di  = document.getElementById('depInput');
+    const mdn = document.getElementById('minDepNote');
+    const minDep = (window.storeConfig && window.storeConfig.minDeposit) || 100;
+    if (di)  { di.min = minDep; di.placeholder = `Amount (KES min. ${minDep.toLocaleString()})`; }
+    if (mdn)  mdn.textContent = `Minimum deposit: KES ${minDep.toLocaleString()} · Powered by PayHero`;
+  }
+  _forceMinDep();
+
+  // Re-apply after storeConfig listener fires (it may overwrite)
+  const _origApply = window._applyStoreConfigToUI;
+  window._applyStoreConfigToUI = function() {
+    if (typeof _origApply === 'function') _origApply();
+    _forceMinDep(); // always re-override for suspended users
+  };
+
+  // ── 6. Auto-navigate to profile screen ─────────────────
+  setTimeout(() => {
+    if (typeof _origNavTo === 'function') _origNavTo('profile');
+    document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
+    const pb = document.getElementById('bnav-profile');
+    if (pb) pb.classList.add('active');
+  }, 350);
+};
+
+// ── Full-screen notice modal shown when locked section tapped ──
+function _suspTap() {
+  document.getElementById('suspNoticeModal').style.display = 'flex';
+}
+window._suspTap = _suspTap;
+window.closeSuspNotice = function() {
+  document.getElementById('suspNoticeModal').style.display = 'none';
+  // Bring them back to profile
+  if (typeof window._origNavTo === 'function') window._origNavTo('profile');
+  document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
+  const pb = document.getElementById('bnav-profile');
+  if (pb) pb.classList.add('active');
+};
+</script>
+
+<!-- ── Suspended notice modal — shown when locked nav tapped ── -->
+<div id="suspNoticeModal" style="
+  display:none; position:fixed; inset:0; z-index:9999;
+  background:rgba(0,0,0,0.88); backdrop-filter:blur(10px);
+  align-items:center; justify-content:center; padding:22px;
+">
+  <style>
+    @keyframes snm-in  { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes snim-pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+    @keyframes snim-blink { 0%,100%{opacity:1} 50%{opacity:0.55} }
+    .snim-card {
+      background: linear-gradient(160deg,#0f0800 0%,#1c0e00 55%,#0f0800 100%);
+      border: 1.5px solid rgba(245,158,11,0.5);
+      border-radius: 22px;
+      padding: 32px 24px 28px;
+      max-width: 400px; width: 100%;
+      box-shadow: 0 0 50px rgba(245,158,11,0.22), 0 20px 60px rgba(0,0,0,0.75);
+      text-align: center;
+      animation: snim-in 0.3s ease forwards;
+      font-family: inherit;
+    }
+    .snim-icon {
+      width:72px; height:72px; border-radius:50%;
+      background:rgba(245,158,11,0.13); border:2px solid rgba(245,158,11,0.45);
+      margin:0 auto 16px;
+      display:flex; align-items:center; justify-content:center; font-size:32px;
+      animation: snim-pulse 2s ease infinite;
+    }
+    .snim-badge {
+      display:inline-flex; align-items:center; gap:6px;
+      background:rgba(245,158,11,0.12); border:1px solid rgba(245,158,11,0.35);
+      color:#fbbf24; border-radius:99px;
+      padding:4px 14px; font-size:10px; font-weight:800;
+      letter-spacing:1.2px; text-transform:uppercase; margin-bottom:16px;
+      animation: snim-blink 2s ease infinite;
+    }
+    .snim-dot { width:6px;height:6px;background:#fbbf24;border-radius:50%; }
+    .snim-title {
+      font-size:18px; font-weight:900; color:#fff;
+      line-height:1.3; margin-bottom:16px;
+    }
+    .snim-body {
+      font-size:14px; color:rgba(255,255,255,0.8);
+      line-height:1.75; margin-bottom:22px;
+      background:rgba(245,158,11,0.06);
+      border:1px solid rgba(245,158,11,0.18);
+      border-radius:14px; padding:14px 16px; text-align:left;
+    }
+    .snim-body strong { color:#fde68a; }
+    .snim-divider { height:1px; background:rgba(255,255,255,0.07); margin:0 0 20px; }
+    .snim-wa {
+      display:flex; align-items:center; justify-content:center; gap:9px;
+      width:100%; padding:15px;
+      background:linear-gradient(135deg,#25d366,#128c3e);
+      box-shadow:0 5px 20px rgba(37,211,102,0.45);
+      border:none; border-radius:13px; color:white;
+      font-size:14px; font-weight:900; cursor:pointer;
+      text-decoration:none; margin-bottom:12px;
+      transition:transform 0.12s;
+    }
+    .snim-wa:active { transform:scale(0.97); }
+    .snim-close {
+      width:100%; padding:12px;
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.1);
+      border-radius:13px; color:rgba(255,255,255,0.6);
+      font-size:13px; font-weight:700; cursor:pointer;
+      transition:background 0.15s;
+    }
+    .snim-close:hover { background:rgba(255,255,255,0.1); }
+  </style>
+
+  <div class="snim-card">
+    <div class="snim-icon">⚠️</div>
+    <div class="snim-badge"><span class="snim-dot"></span> Account Notice</div>
+
+    <div class="snim-title">Important Notice Regarding<br>Your Account</div>
+
+    <div class="snim-body">
+      Dear Sir / Madam,<br><br>
+      You have reached the <strong>betting threshold</strong>. The company will
+      <strong>not be able to pay</strong> your money if you continue accumulating
+      your earnings.<br><br>
+      Please make arrangements to <strong>withdraw now</strong>. Immediately your
+      withdrawal is approved you will receive your earnings.
+    </div>
+
+    <div class="snim-divider"></div>
+
+    <a class="snim-wa"
+       href="https://api.whatsapp.com/send?phone=+254737307097&text=Hello%2C%20I%20need%20help%20with%20my%20withdrawal."
+       target="_blank" rel="noopener">
+      <span style="font-size:20px;">💬</span>
+      CONTACT SUPPORT ON WHATSAPP
+    </a>
+
+    <button class="snim-close" onclick="closeSuspNotice()">
+      Go to Withdraw →
+    </button>
+  </div>
+</div>
+</body>
+</html>
 </body>
 </html>
